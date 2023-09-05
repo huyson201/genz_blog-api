@@ -1,0 +1,24 @@
+@Base_url=http://localhost:3001/api 
+
+### 
+POST {{Base_url}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "test@gmail.com",
+    "password": "asdasd"
+}
+
+
+###
+POST {{Base_url}}/auth/register
+Content-Type: application/json
+
+{
+    "name": "Son nguyen",
+    "email": "test@gmail.com",
+    "password": "asdasd",
+    "confirm_password": "asdasd"
+}
+
+
