@@ -7,8 +7,12 @@ export class MailConsumer {
   constructor(private broveService: BrevoService) {}
 
   @Process('verify-mail')
-  async sendMail(job: Job<{ to: string[]; verify_url: string; name: string }>) {
+  async sendMail(job: Job<SendVerifyEmailData>) {
     const { to, verify_url, name } = job.data;
-    return this.broveService.sendVerifyEmail(to, { verify_url, name });
+    const res = await this.broveService.sendVerifyEmail(to, {
+      verify_url,
+      name,
+    });
+    return res;
   }
 }

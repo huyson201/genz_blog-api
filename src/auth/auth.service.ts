@@ -2,7 +2,9 @@ import {
   Injectable,
   ConflictException,
   UnauthorizedException,
+  Inject,
 } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
@@ -13,20 +15,25 @@ import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/loginDto';
 import { v4 as uuidv4 } from 'uuid';
 import { RefreshTokenDto } from './dto/refreshTokenDto';
+import { Cache } from 'cache-manager';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private readonly UserModel: Model<User>,
+    @Inject(CACHE_MANAGER) private cache: Cache,
+    @InjectQueue('send-mail') private sendMail: Queue,
     private readonly jwtService: JwtService,
     private readonly config: ConfigService,
   ) {}
 
   async register(data: RegisterDto) {
     const { name, email, password } = data;
+
     try {
       const existUser = await this.UserModel.findOne({ email });
-      console.log(existUser);
       if (existUser) {
         throw new ConflictException('email exist!');
       }
@@ -40,6 +47,24 @@ export class AuthService {
       });
 
       await newUser.save();
+
+      // send verify email
+      const verifyId = uuidv4();
+      this.cache.set(`verify-email:${newUser._id}`, verifyId, {
+        ttl: 3600 * 24,
+      });
+
+      const verifyEmailURL =
+        this.config.get('VERIFY_EMAIL_URL') + `?code=${verifyId}`;
+      this.sendMail.add(
+        'verify-mail',
+        {
+          to: [{ email: newUser.email }],
+          name: newUser.name,
+          verify_url: verifyEmailURL,
+        },
+        { removeOnComplete: true, removeOnFail: true },
+      );
       const { password: userPassword, ...authData } = newUser.toJSON();
       return authData;
     } catch (error) {

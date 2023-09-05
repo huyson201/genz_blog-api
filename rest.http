@@ -15,8 +15,8 @@ POST {{Base_url}}/auth/register
 Content-Type: application/json
 
 {
-    "name": "Son nguyen",
-    "email": "test@gmail.com",
+    "name": "Son Nguyen",
+    "email": "lop9.2thanhson@gmail.com",
     "password": "asdasd",
     "confirm_password": "asdasd"
 }
