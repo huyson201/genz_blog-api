@@ -1,8 +1,11 @@
+import { createVerifyMailStoreKey } from './../utils/createVerifyMailStoreKey';
 import {
   Injectable,
   ConflictException,
   UnauthorizedException,
   Inject,
+  BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { JwtService } from '@nestjs/jwt';
@@ -49,13 +52,23 @@ export class AuthService {
       await newUser.save();
 
       // send verify email
-      const verifyId = uuidv4();
-      this.cache.set(`verify-email:${newUser._id}`, verifyId, {
-        ttl: 3600 * 24,
-      });
+      const verifyToken = await this.jwtService.signAsync(
+        { _id: newUser._id, email: newUser.email },
+        { secret: this.config.get('JWT_VERIFY_EMAIL_SECRET'), expiresIn: '1d' },
+      );
+
+      // store verify token to cache with expire time  = 1 day
+      this.cache.set(
+        createVerifyMailStoreKey(newUser._id.toString()),
+        verifyToken,
+        {
+          ttl: 3600 * 24,
+        },
+      );
 
       const verifyEmailURL =
-        this.config.get('VERIFY_EMAIL_URL') + `?code=${verifyId}`;
+        this.config.get('VERIFY_EMAIL_URL') + `?code=${verifyToken}`;
+
       this.sendMail.add(
         'verify-mail',
         {
@@ -65,6 +78,7 @@ export class AuthService {
         },
         { removeOnComplete: true, removeOnFail: true },
       );
+
       const { password: userPassword, ...authData } = newUser.toJSON();
       return authData;
     } catch (error) {
@@ -132,6 +146,7 @@ export class AuthService {
     try {
       const user = await this.UserModel.findById(authData._id);
       if (
+        !user ||
         !user.remember_tokens.some(
           (tokenObj) =>
             tokenObj.tokenId === authData.tokenId &&
@@ -174,6 +189,39 @@ export class AuthService {
         ...user.toObject(),
         remember_tokens: undefined,
         password: undefined,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async verifyEmail(verifyToken: string) {
+    try {
+      const payload = await this.jwtService.verifyAsync(verifyToken, {
+        secret: this.config.get('JWT_VERIFY_EMAIL_SECRET'),
+      });
+
+      const storedVerifyToken: string = await this.cache.get(
+        createVerifyMailStoreKey(payload._id),
+      );
+
+      if (!storedVerifyToken)
+        throw new BadRequestException('Verify token invalid or expired!');
+
+      const user = await this.UserModel.findByIdAndUpdate(
+        payload._id,
+        {
+          $set: {
+            verified: true,
+          },
+        },
+        { new: true },
+      );
+
+      return {
+        ...user.toJSON(),
+        password: undefined,
+        remember_tokens: undefined,
       };
     } catch (error) {
       throw error;

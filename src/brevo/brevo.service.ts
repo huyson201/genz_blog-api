@@ -25,8 +25,6 @@ export class BrevoService {
       templateId: 3,
       params,
     };
-    console.log('send mail');
-    console.log(to);
     const res = await firstValueFrom(
       this.httpService
         .post<{ messageId: string }>(this.base_url, dataSend, {
@@ -38,8 +36,7 @@ export class BrevoService {
         })
         .pipe(
           catchError((error: AxiosError) => {
-            console.log(error.response);
-            return '';
+            throw error;
           }),
         ),
     );
