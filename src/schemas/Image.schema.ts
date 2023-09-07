@@ -6,7 +6,7 @@ export type ImageDocument = HydratedDocument<Image>;
 
 @Schema({ timestamps: true, collection: 'images', autoIndex: true })
 export class Image {
-  @Prop({ type: mongoose.Types.ObjectId, ref: 'users', required: true })
+  @Prop({ type: mongoose.Types.ObjectId, ref: 'User', required: true })
   user: User;
 
   @Prop({ index: true })

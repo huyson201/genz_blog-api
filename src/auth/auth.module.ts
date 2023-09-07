@@ -11,9 +11,13 @@ import { BrevoService } from 'src/brevo/brevo.service';
 @Module({
   imports: [
     DBUserModule,
+    BullModule.registerQueue({
+      name: 'send-mail',
+    }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
+      global: true,
       useFactory(configs: ConfigService) {
         return {
           secret: configs.get('JWT_SECRET'),
@@ -22,9 +26,6 @@ import { BrevoService } from 'src/brevo/brevo.service';
           },
         };
       },
-    }),
-    BullModule.registerQueue({
-      name: 'send-mail',
     }),
     HttpModule.register({
       timeout: 5000,

@@ -1,4 +1,4 @@
-import { DBImageModule } from './../database/DB.Image.module';
+import { DBImageModule } from 'src/database/DB.Image.module';
 import { Module } from '@nestjs/common';
 import { FileController } from './file.controller';
 import { FileService } from './file.service';

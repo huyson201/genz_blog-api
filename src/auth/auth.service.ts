@@ -36,7 +36,9 @@ export class AuthService {
     const { name, email, password } = data;
 
     try {
-      const existUser = await this.UserModel.findOne({ email });
+      const existUser = await this.UserModel.findOne({
+        email: new RegExp(`^${email}$`, 'i'),
+      });
       if (existUser) {
         throw new ConflictException('email exist!');
       }
@@ -50,34 +52,6 @@ export class AuthService {
       });
 
       await newUser.save();
-
-      // send verify email
-      const verifyToken = await this.jwtService.signAsync(
-        { _id: newUser._id, email: newUser.email },
-        { secret: this.config.get('JWT_VERIFY_EMAIL_SECRET'), expiresIn: '1d' },
-      );
-
-      // store verify token to cache with expire time  = 1 day
-      this.cache.set(
-        createVerifyMailStoreKey(newUser._id.toString()),
-        verifyToken,
-        {
-          ttl: 3600 * 24,
-        },
-      );
-
-      const verifyEmailURL =
-        this.config.get('VERIFY_EMAIL_URL') + `?code=${verifyToken}`;
-
-      this.sendMail.add(
-        'verify-mail',
-        {
-          to: [{ email: newUser.email }],
-          name: newUser.name,
-          verify_url: verifyEmailURL,
-        },
-        { removeOnComplete: true, removeOnFail: true },
-      );
 
       const { password: userPassword, ...authData } = newUser.toJSON();
       return authData;
@@ -195,6 +169,39 @@ export class AuthService {
     }
   }
 
+  async sendVerifyEmail(data: AuthData) {
+    try {
+      const user = await this.UserModel.findById(data._id).select(
+        '_id email name',
+      );
+      const verifyToken = await this.generateVerifyEmailToken({
+        _id: data._id,
+        email: data.email,
+      });
+      const verifyUrl = this.createVerifyUrl(verifyToken);
+      // save verify token to cache
+      this.cache.set(
+        createVerifyMailStoreKey(data._id.toString()),
+        verifyToken,
+        {
+          ttl: 3600 * 24,
+        },
+      );
+
+      return this.sendMail.add(
+        'verify-mail',
+        {
+          to: [{ email: data.email }],
+          name: user.name,
+          verify_url: verifyUrl,
+        },
+        { removeOnComplete: true, removeOnFail: true },
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async verifyEmail(verifyToken: string) {
     try {
       const payload = await this.jwtService.verifyAsync(verifyToken, {
@@ -206,7 +213,7 @@ export class AuthService {
       );
 
       if (!storedVerifyToken)
-        throw new BadRequestException('Verify token invalid or expired!');
+        throw new BadRequestException('Verify url invalid or expired!');
 
       const user = await this.UserModel.findByIdAndUpdate(
         payload._id,
@@ -245,6 +252,21 @@ export class AuthService {
       access_token,
       refresh_token,
     };
+  }
+
+  private async generateVerifyEmailToken(payload: {
+    _id: string;
+    email: string;
+  }) {
+    const token = await this.jwtService.signAsync(payload, {
+      secret: this.config.get('JWT_VERIFY_EMAIL_SECRET'),
+      expiresIn: '1d',
+    });
+    return token;
+  }
+
+  private createVerifyUrl(token: string) {
+    return this.config.get('VERIFY_EMAIL_URL') + `?code=${token}`;
   }
 
   private generateAvatarUrl(name: string) {

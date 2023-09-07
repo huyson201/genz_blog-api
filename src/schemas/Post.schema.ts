@@ -1,9 +1,9 @@
+import { Hashtag } from 'src/schemas/HashTag.schema';
+import { User } from 'src/schemas/User.schema';
+
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { User } from './User.schema';
-
 export type PostDocument = HydratedDocument<Post>;
-
 @Schema({ timestamps: true, collection: 'posts' })
 export class Post {
   @Prop({ required: true })
@@ -15,11 +15,19 @@ export class Post {
   @Prop({ required: true })
   content: string;
 
-  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'users' })
+  @Prop({
+    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+  })
   author: User;
 
-  @Prop({ default: [] })
-  hashtags: string[];
+  @Prop({
+    default: [],
+    type: [{ type: mongoose.Types.ObjectId, ref: 'Hashtag' }],
+    required: false,
+  })
+  hashtags: Hashtag[];
 
   @Prop({ default: 0 })
   viewCount: number;

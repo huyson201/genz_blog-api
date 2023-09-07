@@ -46,6 +46,13 @@ export class AuthController {
     this.authService.logout(auth);
   }
 
+  @Post('/send-verify')
+  @UseGuards(AuthGuard)
+  @UseFilters(BadRequestExceptionFilter)
+  sendVerifyEmail(@User() auth: AuthData) {
+    this.authService.sendVerifyEmail(auth);
+  }
+
   @Post('/verify-email')
   @UseFilters(BadRequestExceptionFilter)
   verifyEmail(@Body() dto: VerifyEmailDto) {

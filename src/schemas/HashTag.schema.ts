@@ -1,10 +1,10 @@
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 
-export type HashTagDocument = HydratedDocument<HashTag>;
+export type HashTagDocument = HydratedDocument<Hashtag>;
 
 @Schema({ timestamps: true, collection: 'hashtags', autoIndex: true })
-export class HashTag {
+export class Hashtag {
   @Prop({ required: true })
   name: string;
 
@@ -17,6 +17,6 @@ export class HashTag {
   @Prop()
   updatedAt?: Date;
 }
-const HashTagSchema = SchemaFactory.createForClass(HashTag);
-HashTagSchema.index({ slug: 1, name: 1 }, { unique: true });
-export { HashTagSchema };
+const HashtagSchema = SchemaFactory.createForClass(Hashtag);
+HashtagSchema.index({ slug: 1, name: 1 }, { unique: true });
+export { HashtagSchema };

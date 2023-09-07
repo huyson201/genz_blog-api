@@ -7,14 +7,22 @@ export type CommentDocument = HydratedDocument<Comment>;
 
 @Schema({ timestamps: true, collection: 'comments' })
 export class Comment {
-  @Prop({ type: mongoose.Types.ObjectId, ref: 'posts' })
-  postId: Post;
+  @Prop({ required: true, type: mongoose.Types.ObjectId, ref: 'Post' })
+  post: Post;
 
-  @Prop({ type: mongoose.Types.ObjectId, ref: 'users' })
+  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   author: User;
 
-  @Prop({ default: '' })
+  @Prop({
+    type: mongoose.Types.ObjectId,
+    ref: 'Comment',
+    require: false,
+    default: null,
+  })
   parent: string;
+
+  @Prop()
+  slug: string;
 
   @Prop({ required: true })
   content: string;

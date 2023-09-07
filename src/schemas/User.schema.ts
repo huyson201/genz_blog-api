@@ -7,6 +7,9 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema({ timestamps: true, collection: 'users' })
 export class User {
+  @Prop()
+  _id: mongoose.Types.ObjectId;
+
   @Prop({ default: '' })
   avatar_url: string;
 
@@ -31,7 +34,7 @@ export class User {
   @Prop({ default: [] })
   remember_tokens: Array<RememberToken>;
 
-  @Prop({ default: [], type: mongoose.Types.ObjectId, ref: 'posts' })
+  @Prop({ default: [], type: Array<mongoose.Types.ObjectId>, ref: 'Post' })
   viewHistory: Post[];
 
   @Prop()

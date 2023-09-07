@@ -1,16 +1,16 @@
 @Base_url=http://localhost:3001/api 
 
-### 
+###  @name login
 POST {{Base_url}}/auth/login
 Content-Type: application/json
 
 {
-    "email": "test@gmail.com",
+    "email": "test1@gmail.com",
     "password": "asdasd"
 }
 
 
-###
+### @name register
 POST {{Base_url}}/auth/register
 Content-Type: application/json
 
@@ -21,4 +21,64 @@ Content-Type: application/json
     "confirm_password": "asdasd"
 }
 
+###############################
+#                             #
+#          post               #
+#                             #
+###############################
 
+### @name CreatePost
+Post {{Base_url}}/posts
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIwZjcyYjAzNC0zMjdmLTRkMjktYjBkNy03MTBlMGIwNDUyNjciLCJpYXQiOjE2OTQwMDU1NjUsImV4cCI6MTY5NDE3ODM2NX0._QN9aRieLTUHVlrXM7otkRszcb2rcLmfprqkTWsxRH4
+
+{
+    "title": "Hello world",
+    "content": "Hello, i'm Son Nguyen. Welcome to my blog.",
+    "hashtags": ["asp.net", "TypeScript", "Wordpress", "Windows", "PostgreSQL"]
+}
+
+
+### @name GetPosts
+GET {{Base_url}}/posts?page=1&limit=10
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIwZjcyYjAzNC0zMjdmLTRkMjktYjBkNy03MTBlMGIwNDUyNjciLCJpYXQiOjE2OTQwMDU1NjUsImV4cCI6MTY5NDE3ODM2NX0._QN9aRieLTUHVlrXM7otkRszcb2rcLmfprqkTWsxRH4
+
+### @name DeletePost
+DELETE  {{Base_url}}/posts/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIwZjcyYjAzNC0zMjdmLTRkMjktYjBkNy03MTBlMGIwNDUyNjciLCJpYXQiOjE2OTQwMDU1NjUsImV4cCI6MTY5NDE3ODM2NX0._QN9aRieLTUHVlrXM7otkRszcb2rcLmfprqkTWsxRH4
+
+### @name updatePost
+PATCH   {{Base_url}}/posts/64f87d83375209a8f99b729b
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIwZjcyYjAzNC0zMjdmLTRkMjktYjBkNy03MTBlMGIwNDUyNjciLCJpYXQiOjE2OTQwMDU1NjUsImV4cCI6MTY5NDE3ODM2NX0._QN9aRieLTUHVlrXM7otkRszcb2rcLmfprqkTWsxRH4
+
+{
+    "hashtags":[ "TypeScript"]
+}
+
+###############################
+#                             #
+#          Comments           #
+#                             #
+###############################
+
+
+### @name getComments
+GET     {{Base_url}}/comments
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIwZjcyYjAzNC0zMjdmLTRkMjktYjBkNy03MTBlMGIwNDUyNjciLCJpYXQiOjE2OTQwMDU1NjUsImV4cCI6MTY5NDE3ODM2NX0._QN9aRieLTUHVlrXM7otkRszcb2rcLmfprqkTWsxRH4
+
+
+### @name createComment
+POST    {{Base_url}}/comments
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIwZjcyYjAzNC0zMjdmLTRkMjktYjBkNy03MTBlMGIwNDUyNjciLCJpYXQiOjE2OTQwMDU1NjUsImV4cCI6MTY5NDE3ODM2NX0._QN9aRieLTUHVlrXM7otkRszcb2rcLmfprqkTWsxRH4
+
+{
+    "content": "hello 2",
+    "post": "64f87d83375209a8f99b729b",
+    "parent": "64f94a7c94ab7196afa9e65b",
+    "rootId": "64f94a7c94ab7196afa9e65b"
+}

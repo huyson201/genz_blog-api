@@ -1,14 +1,17 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { BullModule } from '@nestjs/bull';
 import { FileModule } from './file/file.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import { PostModule } from './post/post.module';
 import * as redisStore from 'cache-manager-redis-store';
+import { JwtModule } from '@nestjs/jwt';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -31,6 +34,8 @@ import * as redisStore from 'cache-manager-redis-store';
     UserModule,
     AuthModule,
     FileModule,
+    PostModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
