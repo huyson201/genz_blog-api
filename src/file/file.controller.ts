@@ -16,8 +16,8 @@ import {
 
 import { FilesInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { FileService } from './file.service';
-import { AuthGuard } from 'src/guards/Auth.guard';
-import { User } from 'src/decorators/user.decorator';
+import { AuthGuard } from '../guards/Auth.guard';
+import { User } from '../decorators/user.decorator';
 @Controller('file')
 export class FileController {
   constructor(private fileService: FileService) {}

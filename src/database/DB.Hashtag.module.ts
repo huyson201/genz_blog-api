@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Hashtag, HashtagSchema } from 'src/schemas/Hashtag.schema';
+import { Hashtag, HashtagSchema } from '../schemas/Hashtag.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Hashtag.name, schema: HashtagSchema }]),

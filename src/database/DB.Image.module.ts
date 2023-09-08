@@ -1,7 +1,7 @@
 import { UserSchema } from './../schemas/User.schema';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Image, ImageSchema } from 'src/schemas/Image.schema';
+import { Image, ImageSchema } from '../schemas/Image.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Image.name, schema: ImageSchema }]),

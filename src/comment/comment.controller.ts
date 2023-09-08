@@ -7,9 +7,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
-import { AuthGuard } from 'src/guards/Auth.guard';
-import { BadRequestExceptionFilter } from 'src/ExceptionFilter/BadRequestException.filter';
-import { User } from 'src/decorators/user.decorator';
+import { AuthGuard } from '../guards/Auth.guard';
+import { BadRequestExceptionFilter } from '../ExceptionFilter/BadRequestException.filter';
+import { User } from '../decorators/user.decorator';
 import { CreateCommentDto } from './dto/CreateCommentDto';
 
 @Controller('comments')

@@ -20,7 +20,7 @@ import { RefreshTokenDto } from './dto/refreshTokenDto';
 import { Cache } from 'cache-manager';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
-import { Role } from 'src/types/schema';
+import { Role } from '../types/schema';
 
 @Injectable()
 export class AuthService {

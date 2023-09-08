@@ -1,5 +1,5 @@
-import { Hashtag } from 'src/schemas/HashTag.schema';
-import { User } from 'src/schemas/User.schema';
+import { Hashtag } from '../schemas/HashTag.schema';
+import { User } from '../schemas/User.schema';
 
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';

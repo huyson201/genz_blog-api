@@ -1,6 +1,6 @@
 import { Processor, Process } from '@nestjs/bull';
 import { Job } from 'bull';
-import { BrevoService } from 'src/brevo/brevo.service';
+import { BrevoService } from '../brevo/brevo.service';
 
 @Processor('send-mail')
 export class MailConsumer {

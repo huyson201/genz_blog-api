@@ -4,10 +4,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { DBUserModule } from 'src/database/DB.User.module';
+import { DBUserModule } from '../database/DB.User.module';
 import { JwtModule } from '@nestjs/jwt';
-import { MailConsumer } from 'src/consumers/mail.consumer';
-import { BrevoService } from 'src/brevo/brevo.service';
+import { MailConsumer } from '../consumers/mail.consumer';
+import { BrevoService } from '../brevo/brevo.service';
 @Module({
   imports: [
     DBUserModule,

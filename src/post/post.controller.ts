@@ -16,12 +16,12 @@ import {
   Patch,
 } from '@nestjs/common';
 import { PostService } from './post.service';
-import { BadRequestExceptionFilter } from 'src/ExceptionFilter/BadRequestException.filter';
-import { User } from 'src/decorators/user.decorator';
+import { BadRequestExceptionFilter } from '../ExceptionFilter/BadRequestException.filter';
+import { User } from '../decorators/user.decorator';
 import { PaginationQueryDto } from './dto/paginationQueryDto';
-import { RoleGuard } from 'src/guards/role.guard';
-import { Roles } from 'src/decorators/roles.decorator';
-import { Role } from 'src/types/schema';
+import { RoleGuard } from '../guards/role.guard';
+import { Roles } from '../decorators/roles.decorator';
+import { Role } from '../types/schema';
 
 @Controller('posts')
 export class PostController {

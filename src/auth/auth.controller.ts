@@ -8,13 +8,13 @@ import {
   Get,
 } from '@nestjs/common';
 import { RegisterDto } from './dto/registerDto';
-import { BadRequestExceptionFilter } from 'src/ExceptionFilter/BadRequestException.filter';
+import { BadRequestExceptionFilter } from '../ExceptionFilter/BadRequestException.filter';
 import { LoginDto } from './dto/loginDto';
 import { VerifyEmailDto } from './dto/verifyEmailDto';
-import { AuthGuard } from 'src/guards/Auth.guard';
-import { User } from 'src/decorators/user.decorator';
+import { AuthGuard } from '../guards/Auth.guard';
+import { User } from '../decorators/user.decorator';
 import { RefreshTokenDto } from './dto/refreshTokenDto';
-import { RefreshAuthGuard } from 'src/guards/RefreshAuth.guard';
+import { RefreshAuthGuard } from '../guards/RefreshAuth.guard';
 
 @Controller('auth')
 export class AuthController {
