@@ -18,5 +18,4 @@ export class Hashtag {
   updatedAt?: Date;
 }
 export const HashtagSchema = SchemaFactory.createForClass(Hashtag);
-
 HashtagSchema.index({ slug: 1, name: 1 }, { unique: true });
