@@ -1,4 +1,4 @@
-import { Hashtag } from '../schemas/HashTag.schema';
+import { Hashtag } from '../schemas/tag.schema';
 import { User } from '../schemas/User.schema';
 
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';

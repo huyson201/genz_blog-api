@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Hashtag } from '../schemas/Hashtag.schema';
+import { Hashtag } from '../schemas/tag.schema';
 import { Post } from '../schemas/Post.schema';
 import { slugify } from '../utils/slugify';
 import { PaginationQueryDto } from './dto/paginationQueryDto';
