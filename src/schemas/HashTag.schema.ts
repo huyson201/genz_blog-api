@@ -17,6 +17,6 @@ export class Hashtag {
   @Prop()
   updatedAt?: Date;
 }
-const HashtagSchema = SchemaFactory.createForClass(Hashtag);
+export const HashtagSchema = SchemaFactory.createForClass(Hashtag);
+
 HashtagSchema.index({ slug: 1, name: 1 }, { unique: true });
-export { HashtagSchema };
