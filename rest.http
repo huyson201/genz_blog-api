@@ -5,7 +5,7 @@ POST {{Base_url}}/auth/login
 Content-Type: application/json
 
 {
-    "email": "test1@gmail.com",
+    "email": "admin@gmail.com",
     "password": "asdasd"
 }
 
@@ -30,7 +30,7 @@ Content-Type: application/json
 ### @name CreatePost
 Post {{Base_url}}/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIwZjcyYjAzNC0zMjdmLTRkMjktYjBkNy03MTBlMGIwNDUyNjciLCJpYXQiOjE2OTQwMDU1NjUsImV4cCI6MTY5NDE3ODM2NX0._QN9aRieLTUHVlrXM7otkRszcb2rcLmfprqkTWsxRH4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIxMjJiNjAzYi01NmVkLTQ0ZTItODVmYy0zY2YxM2RkMGM1MTMiLCJyb2xlIjowLCJpYXQiOjE2OTQxNzQ0MjUsImV4cCI6MTY5NDM0NzIyNX0.6PH_oKCRln_bvWU03gozamu-UBOgU3CemKys8Qf0HfY
 
 {
     "title": "Hello world",
@@ -47,7 +47,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQ
 ### @name DeletePost
 DELETE  {{Base_url}}/posts/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIwZjcyYjAzNC0zMjdmLTRkMjktYjBkNy03MTBlMGIwNDUyNjciLCJpYXQiOjE2OTQwMDU1NjUsImV4cCI6MTY5NDE3ODM2NX0._QN9aRieLTUHVlrXM7otkRszcb2rcLmfprqkTWsxRH4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIxMjJiNjAzYi01NmVkLTQ0ZTItODVmYy0zY2YxM2RkMGM1MTMiLCJyb2xlIjowLCJpYXQiOjE2OTQxNzQ0MjUsImV4cCI6MTY5NDM0NzIyNX0.6PH_oKCRln_bvWU03gozamu-UBOgU3CemKys8Qf0HfY
 
 ### @name updatePost
 PATCH   {{Base_url}}/posts/64f87d83375209a8f99b729b

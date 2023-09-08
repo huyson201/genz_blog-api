@@ -19,6 +19,9 @@ import { PostService } from './post.service';
 import { BadRequestExceptionFilter } from 'src/ExceptionFilter/BadRequestException.filter';
 import { User } from 'src/decorators/user.decorator';
 import { PaginationQueryDto } from './dto/paginationQueryDto';
+import { RoleGuard } from 'src/guards/role.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/types/schema';
 
 @Controller('posts')
 export class PostController {
@@ -33,15 +36,17 @@ export class PostController {
   }
 
   @Post()
+  @Roles(Role.Admin)
   @UseFilters(BadRequestExceptionFilter)
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RoleGuard)
   @HttpCode(HttpStatus.CREATED)
   createPost(@Body() data: CreatePostDto, @User() auth: AuthData) {
     return this.postService.createPost(data, auth);
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard)
+  @Roles(Role.Admin)
+  @UseGuards(AuthGuard, RoleGuard)
   @UseFilters(BadRequestExceptionFilter)
   @HttpCode(HttpStatus.OK)
   updatePost(
@@ -53,13 +58,16 @@ export class PostController {
   }
 
   @Patch(':id/view/increase')
+  @Roles(Role.Admin)
+  @UseGuards(AuthGuard, RoleGuard)
   @HttpCode(HttpStatus.OK)
   increasePostView(@Param('id') id: string) {
     return this.postService.increaseView(id);
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard)
+  @Roles(Role.Admin)
+  @UseGuards(AuthGuard, RoleGuard)
   @HttpCode(HttpStatus.OK)
   deletePost(@Param('id') id: string, @User() auth: AuthData) {
     return this.postService.deletePost(auth, id);

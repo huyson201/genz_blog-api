@@ -2,6 +2,7 @@ interface AuthData {
   _id: string;
   email: string;
   tokenId: string;
+  role: Role;
 }
 
 interface SendVerifyEmailData {

@@ -5,7 +5,6 @@ import {
   UnauthorizedException,
   Inject,
   BadRequestException,
-  NotFoundException,
 } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { JwtService } from '@nestjs/jwt';
@@ -21,6 +20,7 @@ import { RefreshTokenDto } from './dto/refreshTokenDto';
 import { Cache } from 'cache-manager';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { Role } from 'src/types/schema';
 
 @Injectable()
 export class AuthService {
@@ -78,6 +78,7 @@ export class AuthService {
         email: verifyUser.email,
         _id: verifyUser._id.toString(),
         tokenId,
+        role: verifyUser.role,
       });
 
       verifyUser.remember_tokens.push({
@@ -87,7 +88,11 @@ export class AuthService {
 
       await verifyUser.save();
 
-      const { password: userPassword, ...user } = verifyUser.toJSON();
+      const {
+        password: userPassword,
+        remember_tokens,
+        ...user
+      } = verifyUser.toJSON();
 
       return {
         ...user,
@@ -135,6 +140,7 @@ export class AuthService {
         _id: authData._id,
         email: authData.email,
         tokenId,
+        role: authData.role,
       });
 
       // delete old token
@@ -177,6 +183,7 @@ export class AuthService {
       const verifyToken = await this.generateVerifyEmailToken({
         _id: data._id,
         email: data.email,
+        role: user.role,
       });
       const verifyUrl = this.createVerifyUrl(verifyToken);
       // save verify token to cache
@@ -239,6 +246,7 @@ export class AuthService {
     _id: string;
     email: string;
     tokenId: string;
+    role: Role;
   }) {
     const [access_token, refresh_token] = await Promise.all([
       this.jwtService.signAsync(payload),
@@ -257,6 +265,7 @@ export class AuthService {
   private async generateVerifyEmailToken(payload: {
     _id: string;
     email: string;
+    role: Role;
   }) {
     const token = await this.jwtService.signAsync(payload, {
       secret: this.config.get('JWT_VERIFY_EMAIL_SECRET'),
