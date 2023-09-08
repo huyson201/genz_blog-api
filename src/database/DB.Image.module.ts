@@ -1,4 +1,3 @@
-import { UserSchema } from './../schemas/User.schema';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Image, ImageSchema } from '../schemas/Image.schema';
