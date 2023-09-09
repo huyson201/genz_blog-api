@@ -22,7 +22,7 @@ import { BrevoService } from '../brevo/brevo.service';
         return {
           secret: configs.get('JWT_SECRET'),
           signOptions: {
-            expiresIn: '2d',
+            expiresIn: configs.get('JWT_EXPIRE'),
           },
         };
       },

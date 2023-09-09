@@ -21,6 +21,7 @@ import { Cache } from 'cache-manager';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { Role } from '../types/schema';
+import parseTimePart from 'src/utils/parseTimePart';
 
 @Injectable()
 export class AuthService {
@@ -248,6 +249,9 @@ export class AuthService {
     tokenId: string;
     role: Role;
   }) {
+    const expireTimeString = this.config.get('JWT_EXPIRE');
+    const expireTimeNumber = parseTimePart(expireTimeString);
+
     const [access_token, refresh_token] = await Promise.all([
       this.jwtService.signAsync(payload),
       this.jwtService.signAsync(payload, {
@@ -259,6 +263,7 @@ export class AuthService {
     return {
       access_token,
       refresh_token,
+      expiresIn: new Date().setTime(new Date().getTime() + expireTimeNumber),
     };
   }
 
