@@ -7,9 +7,6 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema({ timestamps: true, collection: 'users' })
 export class User {
-  @Prop()
-  _id: mongoose.Types.ObjectId;
-
   @Prop({ default: '' })
   avatar_url: string;
 
