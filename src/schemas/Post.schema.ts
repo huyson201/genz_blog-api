@@ -1,3 +1,4 @@
+import { PostDisplay } from 'src/types/schema';
 import { Hashtag } from '../schemas/tag.schema';
 import { User } from '../schemas/User.schema';
 
@@ -28,6 +29,9 @@ export class Post {
     required: false,
   })
   hashtags: Hashtag[];
+
+  @Prop({ default: PostDisplay.JUST_ME, enum: PostDisplay, required: true })
+  display: PostDisplay;
 
   @Prop({ default: 0 })
   viewCount: number;

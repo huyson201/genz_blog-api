@@ -4,7 +4,9 @@ import {
   IsOptional,
   IsArray,
   ArrayMaxSize,
+  IsEnum,
 } from 'class-validator';
+import { PostDisplay } from 'src/types/schema';
 
 export class CreatePostDto {
   @IsString()
@@ -14,6 +16,9 @@ export class CreatePostDto {
   @IsString()
   @IsOptional()
   description: string;
+
+  @IsEnum(PostDisplay)
+  display: PostDisplay;
 
   @IsString()
   @IsNotEmpty()

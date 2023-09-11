@@ -4,6 +4,11 @@ export enum Role {
   User,
 }
 
+export enum PostDisplay {
+  JUST_ME = 'draft',
+  PUBLIC = 'public',
+}
+
 export interface GoogleOAuth {
   googleId: string;
 }
