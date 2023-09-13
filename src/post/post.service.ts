@@ -19,12 +19,15 @@ export class PostService {
     @InjectModel(Hashtag.name) private HashtagModel: Model<Hashtag>,
   ) {}
   async getPosts(auth: AuthData, query: PaginationQueryDto) {
-    const { page, limit } = query;
+    const { page, limit, display } = query;
     const startIndex = (page - 1) * limit;
 
     try {
       const postCountAsync = this.PostModel.count().exec();
-      const postsAsync = this.PostModel.find({ author: auth._id })
+      const postsAsync = this.PostModel.find({
+        author: auth._id,
+        display: display,
+      })
         .populate('hashtags', '_id name slug')
         .skip(startIndex)
         .limit(limit)
@@ -49,7 +52,8 @@ export class PostService {
       author: auth._id,
     });
     await post.save();
-    return post;
+
+    return await post.populate('hashtags', '_id name slug');
   }
 
   async updatePost(auth: AuthData, postId: string, data: UpdatePostDto) {

@@ -30,11 +30,13 @@ Content-Type: application/json
 ### @name CreatePost
 Post {{Base_url}}/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIxMjJiNjAzYi01NmVkLTQ0ZTItODVmYy0zY2YxM2RkMGM1MTMiLCJyb2xlIjowLCJpYXQiOjE2OTQxNzQ0MjUsImV4cCI6MTY5NDM0NzIyNX0.6PH_oKCRln_bvWU03gozamu-UBOgU3CemKys8Qf0HfY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiJhZGJmYmE1NC1jZWE0LTRiYjctYjI1My04ZTkwOGYzZDg1OTQiLCJyb2xlIjowLCJpYXQiOjE2OTQ0NDAxMjcsImV4cCI6MTY5NDQ0NzMyN30.uVON7s7WFIVCs3z1D9qcnVNLCw6V0OUqXtEczWw5dmQ
 
 {
     "title": "Hello world",
     "content": "Hello, i'm Son Nguyen. Welcome to my blog.",
+    "description": "Hello, i'm Son Nguyen. Welcome to my blog.",
+    "display": "public",
     "hashtags": ["asp.net", "TypeScript", "Wordpress", "Windows", "PostgreSQL"]
 }
 
