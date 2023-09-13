@@ -35,6 +35,12 @@ export class PostController {
     return this.postService.getPosts(auth, query);
   }
 
+  @Get(':id')
+  @HttpCode(HttpStatus.OK)
+  getPostById(@Param('id') id: string) {
+    return this.postService.getPostById(id);
+  }
+
   @Post()
   @Roles(Role.Admin)
   @UseFilters(BadRequestExceptionFilter)

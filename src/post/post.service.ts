@@ -40,6 +40,16 @@ export class PostService {
     }
   }
 
+  async getPostById(id: string) {
+    try {
+      const post = await this.PostModel.findById(id).populate('hashtags');
+      if (!post) throw new NotFoundException(`Not found Post with id: ${id}!`);
+      return post;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createPost(data: CreatePostDto, auth: AuthData) {
     const { hashtags, ...postData } = data;
     let savedHashTags = [];
@@ -72,6 +82,7 @@ export class PostService {
       post.title = dataUpdate.title || post.title;
       post.content = dataUpdate.content || post.content;
       post.description = dataUpdate.description || post.description;
+      post.updatedAt = new Date();
       await post.save();
       return await post.populate('hashtags', '_id name slug');
     } catch (error) {

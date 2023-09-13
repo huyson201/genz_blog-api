@@ -30,7 +30,7 @@ Content-Type: application/json
 ### @name CreatePost
 Post {{Base_url}}/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiJhZGJmYmE1NC1jZWE0LTRiYjctYjI1My04ZTkwOGYzZDg1OTQiLCJyb2xlIjowLCJpYXQiOjE2OTQ0NDAxMjcsImV4cCI6MTY5NDQ0NzMyN30.uVON7s7WFIVCs3z1D9qcnVNLCw6V0OUqXtEczWw5dmQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiJkMjc2OGE2MC02NWM3LTRhNGItOWQyNi05YzY2YmQxOWFlNTAiLCJyb2xlIjowLCJpYXQiOjE2OTQ2MDc0MDMsImV4cCI6MTY5NDYxNDYwM30.RkzqbFUIHKGib4Dnn6E2b7Anali7XZu6pIhJqyRwvaw
 
 {
     "title": "Hello world",
@@ -46,18 +46,23 @@ GET {{Base_url}}/posts?page=1&limit=10
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIwZjcyYjAzNC0zMjdmLTRkMjktYjBkNy03MTBlMGIwNDUyNjciLCJpYXQiOjE2OTQwMDU1NjUsImV4cCI6MTY5NDE3ODM2NX0._QN9aRieLTUHVlrXM7otkRszcb2rcLmfprqkTWsxRH4
 
+### @name getPostById
+GET {{Base_url}}/posts/6501a844ec9b92f4d2bcf88c
+Content-Type: application/json
+
+
 ### @name DeletePost
 DELETE  {{Base_url}}/posts/1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIxMjJiNjAzYi01NmVkLTQ0ZTItODVmYy0zY2YxM2RkMGM1MTMiLCJyb2xlIjowLCJpYXQiOjE2OTQxNzQ0MjUsImV4cCI6MTY5NDM0NzIyNX0.6PH_oKCRln_bvWU03gozamu-UBOgU3CemKys8Qf0HfY
 
 ### @name updatePost
-PATCH   {{Base_url}}/posts/64f87d83375209a8f99b729b
+PATCH   {{Base_url}}/posts/6501a844ec9b92f4d2bcf88c
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIwZjcyYjAzNC0zMjdmLTRkMjktYjBkNy03MTBlMGIwNDUyNjciLCJpYXQiOjE2OTQwMDU1NjUsImV4cCI6MTY5NDE3ODM2NX0._QN9aRieLTUHVlrXM7otkRszcb2rcLmfprqkTWsxRH4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiJkMjc2OGE2MC02NWM3LTRhNGItOWQyNi05YzY2YmQxOWFlNTAiLCJyb2xlIjowLCJpYXQiOjE2OTQ2MDc0MDMsImV4cCI6MTY5NDYxNDYwM30.RkzqbFUIHKGib4Dnn6E2b7Anali7XZu6pIhJqyRwvaw
 
 {
-    "hashtags":[ "TypeScript"]
+    "content" : "hello world"
 }
 
 ###############################
