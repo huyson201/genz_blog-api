@@ -1,4 +1,11 @@
-import { IsString, IsOptional, IsArray, ArrayMaxSize } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsArray,
+  ArrayMaxSize,
+  IsEnum,
+} from 'class-validator';
+import { PostDisplay } from 'src/types/schema';
 
 export class UpdatePostDto {
   @IsString()
@@ -18,4 +25,8 @@ export class UpdatePostDto {
   @ArrayMaxSize(5, { message: 'myArray exceeds the maximum length of 5' })
   @IsString({ each: true })
   hashtags: string[];
+
+  @IsOptional()
+  @IsEnum(PostDisplay)
+  display: PostDisplay;
 }

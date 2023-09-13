@@ -82,6 +82,7 @@ export class PostService {
       post.title = dataUpdate.title || post.title;
       post.content = dataUpdate.content || post.content;
       post.description = dataUpdate.description || post.description;
+      post.display = dataUpdate.display || post.display;
       post.updatedAt = new Date();
       await post.save();
       return await post.populate('hashtags', '_id name slug');
