@@ -12,7 +12,4 @@ export class PaginationQueryDto {
   @IsNumber()
   @IsOptional()
   public limit = 5;
-
-  @IsEnum(PostDisplay)
-  public display: PostDisplay;
 }

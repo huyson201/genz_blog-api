@@ -11,6 +11,7 @@ import { Hashtag } from '../schemas/tag.schema';
 import { Post } from '../schemas/Post.schema';
 import { slugify } from '../utils/slugify';
 import { PaginationQueryDto } from './dto/paginationQueryDto';
+import { PostDisplay } from 'src/types/schema';
 
 @Injectable()
 export class PostService {
@@ -18,17 +19,17 @@ export class PostService {
     @InjectModel(Post.name) private PostModel: Model<Post>,
     @InjectModel(Hashtag.name) private HashtagModel: Model<Hashtag>,
   ) {}
-  async getPosts(auth: AuthData, query: PaginationQueryDto) {
-    const { page, limit, display } = query;
+  async getPosts(query: PaginationQueryDto) {
+    const { page, limit } = query;
     const startIndex = (page - 1) * limit;
 
     try {
       const postCountAsync = this.PostModel.count().exec();
       const postsAsync = this.PostModel.find({
-        author: auth._id,
-        display: display,
+        display: PostDisplay.PUBLIC,
       })
         .populate('hashtags', '_id name slug')
+        .populate('author', '_id avatar_url name email')
         .skip(startIndex)
         .limit(limit)
         .sort({ createdAt: -1 })

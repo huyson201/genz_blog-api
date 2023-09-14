@@ -28,11 +28,10 @@ export class PostController {
   constructor(private postService: PostService) {}
 
   @Get()
-  @UseGuards(AuthGuard)
   @UseFilters(BadRequestExceptionFilter)
   @HttpCode(HttpStatus.OK)
-  getPosts(@User() auth: AuthData, @Query() query: PaginationQueryDto) {
-    return this.postService.getPosts(auth, query);
+  getPosts(@Query() query: PaginationQueryDto) {
+    return this.postService.getPosts(query);
   }
 
   @Get(':id')

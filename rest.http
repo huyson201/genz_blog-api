@@ -44,7 +44,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQ
 ### @name GetPosts
 GET {{Base_url}}/posts?page=1&limit=10
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIwZjcyYjAzNC0zMjdmLTRkMjktYjBkNy03MTBlMGIwNDUyNjciLCJpYXQiOjE2OTQwMDU1NjUsImV4cCI6MTY5NDE3ODM2NX0._QN9aRieLTUHVlrXM7otkRszcb2rcLmfprqkTWsxRH4
 
 ### @name getPostById
 GET {{Base_url}}/posts/6501a844ec9b92f4d2bcf88c
