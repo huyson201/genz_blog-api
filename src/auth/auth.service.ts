@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
   Inject,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { JwtService } from '@nestjs/jwt';
@@ -22,11 +23,13 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { Role } from '../types/schema';
 import parseTimePart from 'src/utils/parseTimePart';
+import { Post } from 'src/schemas/Post.schema';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private readonly UserModel: Model<User>,
+    @InjectModel(Post.name) private readonly PostModel: Model<Post>,
     @Inject(CACHE_MANAGER) private cache: Cache,
     @InjectQueue('send-mail') private sendMail: Queue,
     private readonly jwtService: JwtService,
@@ -238,6 +241,21 @@ export class AuthService {
         password: undefined,
         remember_tokens: undefined,
       };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getPostById(auth: AuthData, postId: string) {
+    try {
+      const post = await this.PostModel.findOne({
+        _id: postId,
+        author: auth._id,
+      })
+        .populate('hashtags', '_id name slug')
+        .populate('author', '_id name email avatar_url');
+      if (!post) throw new NotFoundException(`Post ${postId} not found!`);
+      return post;
     } catch (error) {
       throw error;
     }

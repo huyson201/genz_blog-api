@@ -43,7 +43,11 @@ export class PostService {
 
   async getPostById(id: string) {
     try {
-      const post = await this.PostModel.findById(id).populate('hashtags');
+      const post = await this.PostModel.findById(id)
+        .where('display')
+        .equals(PostDisplay.PUBLIC)
+        .populate('hashtags')
+        .populate('author', '_id name avatar_url email');
       if (!post) throw new NotFoundException(`Not found Post with id: ${id}!`);
       return post;
     } catch (error) {

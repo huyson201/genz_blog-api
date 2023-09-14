@@ -8,9 +8,11 @@ import { DBUserModule } from '../database/DB.User.module';
 import { JwtModule } from '@nestjs/jwt';
 import { MailConsumer } from '../consumers/mail.consumer';
 import { BrevoService } from '../brevo/brevo.service';
+import { DBPostModule } from 'src/database/DB.Post.module';
 @Module({
   imports: [
     DBUserModule,
+    DBPostModule,
     BullModule.registerQueue({
       name: 'send-mail',
     }),

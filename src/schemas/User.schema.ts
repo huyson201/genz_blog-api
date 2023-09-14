@@ -1,10 +1,9 @@
-import mongoose, { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument, Model } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Post } from './Post.schema';
 import { GoogleOAuth, RememberToken, Role } from '../types/schema';
 
 export type UserDocument = HydratedDocument<User>;
-
 @Schema({ timestamps: true, collection: 'users' })
 export class User {
   @Prop({ default: '' })

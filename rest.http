@@ -16,10 +16,16 @@ Content-Type: application/json
 
 {
     "name": "Son Nguyen",
-    "email": "lop9.2thanhson@gmail.com",
+    "email": "lop9.1thanhson@gmail.com",
     "password": "asdasd",
     "confirm_password": "asdasd"
 }
+
+### @name authGetPostById
+GET {{Base_url}}/auth/posts/6501a844ec9b92f4d2bcf88c
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiI2YWQzYjk4OS1lNWVmLTQzYWItYjAwNi1kYzkzMDQ1MTU2YWQiLCJyb2xlIjowLCJpYXQiOjE2OTQ2NjQ1NzQsImV4cCI6MTY5NDY3MTc3NH0.n14NxTMTLiEdabhOai7wJOtexDF7yMtRQiAA_QNt5x4
+
 
 ###############################
 #                             #
@@ -30,7 +36,7 @@ Content-Type: application/json
 ### @name CreatePost
 Post {{Base_url}}/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiJkMjc2OGE2MC02NWM3LTRhNGItOWQyNi05YzY2YmQxOWFlNTAiLCJyb2xlIjowLCJpYXQiOjE2OTQ2MDc0MDMsImV4cCI6MTY5NDYxNDYwM30.RkzqbFUIHKGib4Dnn6E2b7Anali7XZu6pIhJqyRwvaw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiI2YWQzYjk4OS1lNWVmLTQzYWItYjAwNi1kYzkzMDQ1MTU2YWQiLCJyb2xlIjowLCJpYXQiOjE2OTQ2NjQ1NzQsImV4cCI6MTY5NDY3MTc3NH0.n14NxTMTLiEdabhOai7wJOtexDF7yMtRQiAA_QNt5x4
 
 {
     "title": "Hello world",

@@ -6,6 +6,7 @@ import {
   UseFilters,
   UseGuards,
   Get,
+  Param,
 } from '@nestjs/common';
 import { RegisterDto } from './dto/registerDto';
 import { BadRequestExceptionFilter } from '../ExceptionFilter/BadRequestException.filter';
@@ -21,10 +22,15 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('/profile')
-  @Post('/logout')
   @UseGuards(AuthGuard)
   getProfile(@User() auth: AuthData) {
     return this.authService.getProfile(auth);
+  }
+
+  @Get('/posts/:id')
+  @UseGuards(AuthGuard)
+  getPostById(@User() auth: AuthData, @Param('id') id: string) {
+    return this.authService.getPostById(auth, id);
   }
 
   @Post('/register')
