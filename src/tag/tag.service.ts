@@ -73,4 +73,14 @@ export class TagService {
       docs,
     };
   }
+
+  async getTagBySlug(slug: string) {
+    try {
+      const tag = await this.HashTag.findOne({ slug });
+      if (!tag) throw new NotFoundException();
+      return tag;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

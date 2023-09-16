@@ -115,3 +115,8 @@ Content-Type: application/json
 ### @name GetPostByTagSlug
 GET {{Base_url}}/tags/postgresql/posts
 Content-Type: application/json
+
+
+### @name GetTagByTagSlug
+GET {{Base_url}}/tags/postgresql
+Content-Type: application/json

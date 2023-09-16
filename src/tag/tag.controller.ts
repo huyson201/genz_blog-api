@@ -22,6 +22,13 @@ export class TagController {
     return this.tagService.getHashtags(query);
   }
 
+  @Get(':slug')
+  @UseFilters(BadRequestExceptionFilter)
+  @HttpCode(HttpStatus.OK)
+  getTagBySlug(@Param('slug') slug: string) {
+    return this.tagService.getTagBySlug(slug);
+  }
+
   @Get(':slug/posts')
   @UseFilters(BadRequestExceptionFilter)
   @HttpCode(HttpStatus.OK)
