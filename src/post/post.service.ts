@@ -12,6 +12,7 @@ import { Post } from '../schemas/Post.schema';
 import { slugify } from '../utils/slugify';
 import { PaginationQueryDto } from './dto/paginationQueryDto';
 import { PostDisplay } from 'src/types/schema';
+import { SearchQueryDto } from './dto/SearchQueryDto';
 
 @Injectable()
 export class PostService {
@@ -24,7 +25,9 @@ export class PostService {
     const startIndex = (page - 1) * limit;
 
     try {
-      const postCountAsync = this.PostModel.count().exec();
+      const postCountAsync = this.PostModel.count({
+        display: PostDisplay.PUBLIC,
+      }).exec();
       const postsAsync = this.PostModel.find({
         display: PostDisplay.PUBLIC,
       })
@@ -121,6 +124,28 @@ export class PostService {
     }
   }
 
+  async searchPosts(query: SearchQueryDto) {
+    const { q, page, limit } = query;
+    const startIndex = (page - 1) * limit;
+    try {
+      const filter = {
+        $text: { $search: q },
+        display: PostDisplay.PUBLIC,
+      };
+      const countPromise = this.PostModel.count(filter).exec();
+      const postsPromise = this.PostModel.find(filter)
+        .populate('hashtags', '_id name slug')
+        .populate('author', '_id avatar_url name email')
+        .skip(startIndex)
+        .limit(limit)
+        .sort({ createdAt: -1 })
+        .exec();
+      const [count, posts] = await Promise.all([countPromise, postsPromise]);
+      return this.createPaginationDoc(count, page, limit, posts);
+    } catch (error) {
+      throw error;
+    }
+  }
   private async checkOrCreateHashtags(hashtags: string[]) {
     if (hashtags.length <= 0) return [];
 

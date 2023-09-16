@@ -12,6 +12,7 @@ import { PostModule } from './post/post.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { JwtModule } from '@nestjs/jwt';
 import { CommentModule } from './comment/comment.module';
+import { TagModule } from './tag/tag.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { CommentModule } from './comment/comment.module';
     FileModule,
     PostModule,
     CommentModule,
+    TagModule,
   ],
   controllers: [AppController],
   providers: [AppService],

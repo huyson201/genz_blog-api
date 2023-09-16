@@ -70,6 +70,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQ
     "content" : "hello world"
 }
 
+
+### @name searchPosts
+GET {{Base_url}}/posts/search?q=te
+Content-Type: application/json
+
+
+
 ###############################
 #                             #
 #          Comments           #
@@ -94,3 +101,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQ
     "parent": "64f94a7c94ab7196afa9e65b",
     "rootId": "64f94a7c94ab7196afa9e65b"
 }
+
+###############################
+#                             #
+#          Hashtags           #
+#                             #
+###############################
+
+### @name GetHashtags
+GET {{Base_url}}/tags?page=2&limit=10
+Content-Type: application/json
+
+### @name GetPostByTagSlug
+GET {{Base_url}}/tags/postgresql/posts
+Content-Type: application/json

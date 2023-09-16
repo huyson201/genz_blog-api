@@ -5,7 +5,7 @@ import { User } from '../schemas/User.schema';
 import { Schema, SchemaFactory, Prop } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 export type PostDocument = HydratedDocument<Post>;
-@Schema({ timestamps: true, collection: 'posts' })
+@Schema({ timestamps: true, collection: 'posts', autoIndex: true })
 export class Post {
   @Prop({ required: true })
   title: string;
@@ -47,3 +47,4 @@ export class Post {
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
+PostSchema.index({ title: 'text' });

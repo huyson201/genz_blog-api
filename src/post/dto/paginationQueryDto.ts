@@ -1,6 +1,5 @@
-import { PostDisplay } from './../../types/schema';
 import { Transform } from 'class-transformer';
-import { IsEnum, IsNumber, IsOptional } from 'class-validator';
+import { IsNumber, IsOptional } from 'class-validator';
 
 export class PaginationQueryDto {
   @Transform(({ value }) => parseInt(value))

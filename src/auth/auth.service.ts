@@ -21,7 +21,7 @@ import { RefreshTokenDto } from './dto/refreshTokenDto';
 import { Cache } from 'cache-manager';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
-import { Role } from '../types/schema';
+import { PostDisplay, Role } from '../types/schema';
 import parseTimePart from 'src/utils/parseTimePart';
 import { Post } from 'src/schemas/Post.schema';
 
@@ -256,6 +256,14 @@ export class AuthService {
         .populate('author', '_id name email avatar_url');
       if (!post) throw new NotFoundException(`Post ${postId} not found!`);
       return post;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getPostByAuth(auth: AuthData, display: PostDisplay) {
+    try {
+      return;
     } catch (error) {
       throw error;
     }

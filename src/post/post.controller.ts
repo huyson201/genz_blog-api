@@ -22,6 +22,7 @@ import { PaginationQueryDto } from './dto/paginationQueryDto';
 import { RoleGuard } from '../guards/role.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../types/schema';
+import { SearchQueryDto } from './dto/SearchQueryDto';
 
 @Controller('posts')
 export class PostController {
@@ -32,6 +33,13 @@ export class PostController {
   @HttpCode(HttpStatus.OK)
   getPosts(@Query() query: PaginationQueryDto) {
     return this.postService.getPosts(query);
+  }
+
+  @Get('search')
+  @HttpCode(HttpStatus.OK)
+  @UseFilters(BadRequestExceptionFilter)
+  searchPosts(@Query() query: SearchQueryDto) {
+    return this.postService.searchPosts(query);
   }
 
   @Get(':id')

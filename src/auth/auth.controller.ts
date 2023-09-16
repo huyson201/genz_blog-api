@@ -16,6 +16,9 @@ import { AuthGuard } from '../guards/Auth.guard';
 import { User } from '../decorators/user.decorator';
 import { RefreshTokenDto } from './dto/refreshTokenDto';
 import { RefreshAuthGuard } from '../guards/RefreshAuth.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { RoleGuard } from 'src/guards/role.guard';
+import { Role } from 'src/types/schema';
 
 @Controller('auth')
 export class AuthController {
@@ -28,7 +31,9 @@ export class AuthController {
   }
 
   @Get('/posts/:id')
-  @UseGuards(AuthGuard)
+  @Roles(Role.Admin)
+  @UseFilters(BadRequestExceptionFilter)
+  @UseGuards(AuthGuard, RoleGuard)
   getPostById(@User() auth: AuthData, @Param('id') id: string) {
     return this.authService.getPostById(auth, id);
   }
