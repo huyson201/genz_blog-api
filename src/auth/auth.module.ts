@@ -9,6 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { MailConsumer } from '../consumers/mail.consumer';
 import { BrevoService } from '../brevo/brevo.service';
 import { DBPostModule } from 'src/database/DB.Post.module';
+import { GoogleService } from 'src/google/google.service';
 @Module({
   imports: [
     DBUserModule,
@@ -35,6 +36,6 @@ import { DBPostModule } from 'src/database/DB.Post.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, MailConsumer, BrevoService],
+  providers: [AuthService, MailConsumer, BrevoService, GoogleService],
 })
 export class AuthModule {}

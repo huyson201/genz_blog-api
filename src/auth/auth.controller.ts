@@ -19,6 +19,7 @@ import { RefreshAuthGuard } from '../guards/RefreshAuth.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RoleGuard } from 'src/guards/role.guard';
 import { Role } from 'src/types/schema';
+import { GoogleLoginDto } from './dto/googleLoginDto';
 
 @Controller('auth')
 export class AuthController {
@@ -48,6 +49,12 @@ export class AuthController {
   @UseFilters(BadRequestExceptionFilter)
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
+  }
+
+  @Post('/login/google')
+  @UseFilters(BadRequestExceptionFilter)
+  googleLogin(@Body() dto: GoogleLoginDto) {
+    return this.authService.googleSignIn(dto);
   }
 
   @Post('/logout')

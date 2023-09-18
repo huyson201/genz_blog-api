@@ -24,6 +24,8 @@ import { Queue } from 'bull';
 import { PostDisplay, Role } from '../types/schema';
 import parseTimePart from 'src/utils/parseTimePart';
 import { Post } from 'src/schemas/Post.schema';
+import { GoogleService } from 'src/google/google.service';
+import { GoogleLoginDto } from './dto/googleLoginDto';
 
 @Injectable()
 export class AuthService {
@@ -34,6 +36,7 @@ export class AuthService {
     @InjectQueue('send-mail') private sendMail: Queue,
     private readonly jwtService: JwtService,
     private readonly config: ConfigService,
+    private googleService: GoogleService,
   ) {}
 
   async register(data: RegisterDto) {
@@ -264,6 +267,60 @@ export class AuthService {
   async getPostByAuth(auth: AuthData, display: PostDisplay) {
     try {
       return;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async googleSignIn({ idToken }: GoogleLoginDto) {
+    try {
+      const { payload, userId } = await this.googleService.verifyIdToken(
+        idToken,
+      );
+      let user = await this.UserModel.findOne({
+        email: new RegExp(`^${payload.email}$`, 'i'),
+      });
+
+      if (user) {
+        user.verified = payload.email_verified;
+        user.googleOAuth = {
+          googleId: userId,
+        };
+        user.avatar_url = payload.picture;
+      } else {
+        user = new this.UserModel({
+          email: payload.email,
+          name: `${payload.name}`,
+          avatar_url: payload.picture,
+          googleOAuth: {
+            googleId: userId,
+          },
+        });
+
+        // generate tokenId
+        const tokenId = uuidv4();
+
+        const tokens = await this.generateToken({
+          email: user.email,
+          _id: user._id.toString(),
+          tokenId,
+          role: user.role,
+        });
+
+        user.remember_tokens.push({
+          tokenId,
+          token: tokens.refresh_token,
+        });
+
+        await user.save();
+
+        return {
+          ...user.toJSON(),
+          password: undefined,
+          remember_tokens: undefined,
+          backendTokens: tokens,
+        };
+      }
     } catch (error) {
       throw error;
     }
