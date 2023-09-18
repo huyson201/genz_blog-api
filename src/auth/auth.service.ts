@@ -292,35 +292,36 @@ export class AuthService {
           email: payload.email,
           name: `${payload.name}`,
           avatar_url: payload.picture,
+          verified: payload.email_verified,
           googleOAuth: {
             googleId: userId,
           },
         });
-
-        // generate tokenId
-        const tokenId = uuidv4();
-
-        const tokens = await this.generateToken({
-          email: user.email,
-          _id: user._id.toString(),
-          tokenId,
-          role: user.role,
-        });
-
-        user.remember_tokens.push({
-          tokenId,
-          token: tokens.refresh_token,
-        });
-
-        await user.save();
-
-        return {
-          ...user.toJSON(),
-          password: undefined,
-          remember_tokens: undefined,
-          backendTokens: tokens,
-        };
       }
+
+      // generate tokenId
+      const tokenId = uuidv4();
+
+      const tokens = await this.generateToken({
+        email: user.email,
+        _id: user._id.toString(),
+        tokenId,
+        role: user.role,
+      });
+
+      user.remember_tokens.push({
+        tokenId,
+        token: tokens.refresh_token,
+      });
+
+      await user.save();
+
+      return {
+        ...user.toJSON(),
+        password: undefined,
+        remember_tokens: undefined,
+        backendTokens: tokens,
+      };
     } catch (error) {
       throw error;
     }

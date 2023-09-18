@@ -7,6 +7,8 @@ import {
   UseGuards,
   Get,
   Param,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { RegisterDto } from './dto/registerDto';
 import { BadRequestExceptionFilter } from '../ExceptionFilter/BadRequestException.filter';
@@ -27,6 +29,7 @@ export class AuthController {
 
   @Get('/profile')
   @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
   getProfile(@User() auth: AuthData) {
     return this.authService.getProfile(auth);
   }
@@ -35,23 +38,27 @@ export class AuthController {
   @Roles(Role.Admin)
   @UseFilters(BadRequestExceptionFilter)
   @UseGuards(AuthGuard, RoleGuard)
+  @HttpCode(HttpStatus.OK)
   getPostById(@User() auth: AuthData, @Param('id') id: string) {
     return this.authService.getPostById(auth, id);
   }
 
   @Post('/register')
+  @HttpCode(HttpStatus.CREATED)
   @UseFilters(BadRequestExceptionFilter)
   register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
   }
 
   @Post('/login')
+  @HttpCode(HttpStatus.OK)
   @UseFilters(BadRequestExceptionFilter)
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
   }
 
   @Post('/login/google')
+  @HttpCode(HttpStatus.OK)
   @UseFilters(BadRequestExceptionFilter)
   googleLogin(@Body() dto: GoogleLoginDto) {
     return this.authService.googleSignIn(dto);
@@ -59,6 +66,7 @@ export class AuthController {
 
   @Post('/logout')
   @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
   @UseFilters(BadRequestExceptionFilter)
   logout(@User() auth: AuthData) {
     this.authService.logout(auth);
@@ -67,12 +75,14 @@ export class AuthController {
   @Post('/send-verify')
   @UseGuards(AuthGuard)
   @UseFilters(BadRequestExceptionFilter)
+  @HttpCode(HttpStatus.OK)
   sendVerifyEmail(@User() auth: AuthData) {
     this.authService.sendVerifyEmail(auth);
   }
 
   @Post('/verify-email')
   @UseFilters(BadRequestExceptionFilter)
+  @HttpCode(HttpStatus.OK)
   verifyEmail(@Body() dto: VerifyEmailDto) {
     this.authService.verifyEmail(dto.verifyToken);
   }
@@ -80,6 +90,7 @@ export class AuthController {
   @Post('/refresh-token')
   @UseFilters(BadRequestExceptionFilter)
   @UseGuards(RefreshAuthGuard)
+  @HttpCode(HttpStatus.OK)
   refreshToken(@Body() dto: RefreshTokenDto, @User() auth: AuthData) {
     return this.authService.refreshToken(auth, dto);
   }
