@@ -26,12 +26,14 @@ import parseTimePart from 'src/utils/parseTimePart';
 import { Post } from 'src/schemas/Post.schema';
 import { GoogleService } from 'src/google/google.service';
 import { GoogleLoginDto } from './dto/googleLoginDto';
+import { Image } from 'src/schemas/Image.schema';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private readonly UserModel: Model<User>,
     @InjectModel(Post.name) private readonly PostModel: Model<Post>,
+    @InjectModel(Image.name) private readonly ImageModel: Model<Image>,
     @Inject(CACHE_MANAGER) private cache: Cache,
     @InjectQueue('send-mail') private sendMail: Queue,
     private readonly jwtService: JwtService,
@@ -327,6 +329,14 @@ export class AuthService {
     }
   }
 
+  async getImages(auth: AuthData) {
+    try {
+      const images = await this.ImageModel.find({ user: auth._id });
+      return images;
+    } catch (error) {
+      throw error;
+    }
+  }
   private async generateToken(payload: {
     _id: string;
     email: string;

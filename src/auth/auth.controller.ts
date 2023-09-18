@@ -34,6 +34,13 @@ export class AuthController {
     return this.authService.getProfile(auth);
   }
 
+  @Get('/gallery')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  getImages(@User() auth: AuthData) {
+    return this.authService.getImages(auth);
+  }
+
   @Get('/posts/:id')
   @Roles(Role.Admin)
   @UseFilters(BadRequestExceptionFilter)

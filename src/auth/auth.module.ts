@@ -10,10 +10,12 @@ import { MailConsumer } from '../consumers/mail.consumer';
 import { BrevoService } from '../brevo/brevo.service';
 import { DBPostModule } from 'src/database/DB.Post.module';
 import { GoogleService } from 'src/google/google.service';
+import { DBImageModule } from 'src/database/DB.Image.module';
 @Module({
   imports: [
     DBUserModule,
     DBPostModule,
+    DBImageModule,
     BullModule.registerQueue({
       name: 'send-mail',
     }),
