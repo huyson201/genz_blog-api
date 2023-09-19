@@ -96,7 +96,10 @@ export class PostService {
   }
   async deletePost(auth: AuthData, postId: string) {
     try {
-      await this.PostModel.findByIdAndDelete(postId);
+      await this.PostModel.findOneAndDelete({
+        _id: postId,
+        author: auth._id,
+      });
       return {
         message: 'delete success!',
       };
