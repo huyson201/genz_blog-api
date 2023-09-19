@@ -16,10 +16,27 @@ Content-Type: application/json
 
 {
     "name": "Son Nguyen",
-    "email": "lop9.1thanhson@gmail.com",
+    "email": "admin@gmail.com",
     "password": "asdasd",
     "confirm_password": "asdasd"
 }
+
+###
+GET {{Base_url}}/auth/posts?display=draft
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiJkZGUxNTI2OS1hNDI0LTQ1YmYtOTBjYi0xY2FkZWViMWVlYmQiLCJyb2xlIjowLCJpYXQiOjE2OTUwOTU5MzEsImV4cCI6MTY5NTEwMzEzMX0.HmLGtPKwE5O8QPN9LdbgnLsUP4PQR82KsPKYfX2Hv9E
+
+
+###############################
+#                             #
+#          images             #
+#                             #
+###############################
+
+GET {{Base_url}}/auth/gallery
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiI5OGMyYTE1Mi0xMTBiLTRiYmUtOGM0ZS1kYmUwNmQ4Y2E1Y2MiLCJyb2xlIjowLCJpYXQiOjE2OTUwNDIzNTIsImV4cCI6MTY5NTA0OTU1Mn0.JgcvpZR17NVYDx-1zGLSMLXmUbw_39CXuEr_VuFw5DI
+
 
 ### @name authGetPostById
 GET {{Base_url}}/auth/posts/6501a844ec9b92f4d2bcf88c

@@ -1,10 +1,6 @@
 import { UpdatePostDto } from './dto/UpdatePostDto';
 import { CreatePostDto } from './dto/CreatePostDto';
-import {
-  Injectable,
-  NotFoundException,
-  ForbiddenException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Hashtag } from '../schemas/tag.schema';

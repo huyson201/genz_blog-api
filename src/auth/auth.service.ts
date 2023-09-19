@@ -21,12 +21,13 @@ import { RefreshTokenDto } from './dto/refreshTokenDto';
 import { Cache } from 'cache-manager';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
-import { PostDisplay, Role } from '../types/schema';
+import { Role } from '../types/schema';
 import parseTimePart from 'src/utils/parseTimePart';
 import { Post } from 'src/schemas/Post.schema';
 import { GoogleService } from 'src/google/google.service';
 import { GoogleLoginDto } from './dto/googleLoginDto';
 import { Image } from 'src/schemas/Image.schema';
+import { GetPostDto } from './dto/getPostsDto';
 
 @Injectable()
 export class AuthService {
@@ -266,9 +267,26 @@ export class AuthService {
     }
   }
 
-  async getPostByAuth(auth: AuthData, display: PostDisplay) {
+  async getPostsByAuth(auth: AuthData, query: GetPostDto) {
+    const { page, limit, display } = query;
+    const skip = (page - 1) * limit;
     try {
-      return;
+      const countPromise = this.PostModel.count({
+        author: auth._id,
+        display: display,
+      }).exec();
+      const postPromise = this.PostModel.find({
+        author: auth._id,
+        display: display,
+      })
+        .populate('hashtags', '_id name slug')
+        .populate('author', '_id avatar_url name email')
+        .skip(skip)
+        .limit(limit)
+        .sort({ createdAt: -1 })
+        .exec();
+      const [count, posts] = await Promise.all([countPromise, postPromise]);
+      return this.createPaginationDoc(count, page, limit, posts);
     } catch (error) {
       throw error;
     }
@@ -331,7 +349,9 @@ export class AuthService {
 
   async getImages(auth: AuthData) {
     try {
-      const images = await this.ImageModel.find({ user: auth._id });
+      const images = await this.ImageModel.find({ user: auth._id }).sort({
+        createdAt: -1,
+      });
       return images;
     } catch (error) {
       throw error;
@@ -379,5 +399,26 @@ export class AuthService {
 
   private generateAvatarUrl(name: string) {
     return 'https://ui-avatars.com/api/?background=random&name=' + name;
+  }
+
+  private createPaginationDoc(
+    totalDocs: number,
+    page: number,
+    limit: number,
+    docs: any,
+  ) {
+    const totalPages = Math.ceil(totalDocs / limit);
+    const prevPage = page > 1 ? page - 1 : null;
+    const nextPage = page < totalPages ? page + 1 : null;
+
+    return {
+      totalDocs: totalDocs,
+      totalPages,
+      page,
+      limit,
+      prevPage,
+      nextPage,
+      docs,
+    };
   }
 }

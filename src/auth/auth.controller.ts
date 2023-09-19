@@ -9,6 +9,7 @@ import {
   Param,
   HttpCode,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { RegisterDto } from './dto/registerDto';
 import { BadRequestExceptionFilter } from '../ExceptionFilter/BadRequestException.filter';
@@ -22,8 +23,10 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { RoleGuard } from 'src/guards/role.guard';
 import { Role } from 'src/types/schema';
 import { GoogleLoginDto } from './dto/googleLoginDto';
+import { GetPostDto } from './dto/getPostsDto';
 
 @Controller('auth')
+@UseFilters(BadRequestExceptionFilter)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -41,9 +44,16 @@ export class AuthController {
     return this.authService.getImages(auth);
   }
 
+  @Get('/posts')
+  @Roles(Role.Admin)
+  @UseGuards(AuthGuard, RoleGuard)
+  @HttpCode(HttpStatus.OK)
+  getPosts(@User() auth: AuthData, @Query() query: GetPostDto) {
+    return this.authService.getPostsByAuth(auth, query);
+  }
+
   @Get('/posts/:id')
   @Roles(Role.Admin)
-  @UseFilters(BadRequestExceptionFilter)
   @UseGuards(AuthGuard, RoleGuard)
   @HttpCode(HttpStatus.OK)
   getPostById(@User() auth: AuthData, @Param('id') id: string) {
@@ -52,21 +62,18 @@ export class AuthController {
 
   @Post('/register')
   @HttpCode(HttpStatus.CREATED)
-  @UseFilters(BadRequestExceptionFilter)
   register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
   }
 
   @Post('/login')
   @HttpCode(HttpStatus.OK)
-  @UseFilters(BadRequestExceptionFilter)
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
   }
 
   @Post('/login/google')
   @HttpCode(HttpStatus.OK)
-  @UseFilters(BadRequestExceptionFilter)
   googleLogin(@Body() dto: GoogleLoginDto) {
     return this.authService.googleSignIn(dto);
   }
@@ -74,28 +81,24 @@ export class AuthController {
   @Post('/logout')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
-  @UseFilters(BadRequestExceptionFilter)
   logout(@User() auth: AuthData) {
     this.authService.logout(auth);
   }
 
   @Post('/send-verify')
   @UseGuards(AuthGuard)
-  @UseFilters(BadRequestExceptionFilter)
   @HttpCode(HttpStatus.OK)
   sendVerifyEmail(@User() auth: AuthData) {
     this.authService.sendVerifyEmail(auth);
   }
 
   @Post('/verify-email')
-  @UseFilters(BadRequestExceptionFilter)
   @HttpCode(HttpStatus.OK)
   verifyEmail(@Body() dto: VerifyEmailDto) {
     this.authService.verifyEmail(dto.verifyToken);
   }
 
   @Post('/refresh-token')
-  @UseFilters(BadRequestExceptionFilter)
   @UseGuards(RefreshAuthGuard)
   @HttpCode(HttpStatus.OK)
   refreshToken(@Body() dto: RefreshTokenDto, @User() auth: AuthData) {
