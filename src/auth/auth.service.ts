@@ -63,8 +63,11 @@ export class AuthService {
 
       await newUser.save();
 
-      const { password: userPassword, ...authData } = newUser.toJSON();
-      return authData;
+      return {
+        ...newUser.toJSON(),
+        password: undefined,
+        remember_tokens: undefined,
+      };
     } catch (error) {
       console.log(error);
       throw error;
@@ -98,15 +101,11 @@ export class AuthService {
 
       await verifyUser.save();
 
-      const {
-        password: userPassword,
-        remember_tokens,
-        ...user
-      } = verifyUser.toJSON();
-
       return {
-        ...user,
+        ...verifyUser.toJSON(),
         backendTokens: tokens,
+        password: undefined,
+        remember_tokens: undefined,
       };
     } catch (error) {
       console.log(error);
@@ -268,17 +267,26 @@ export class AuthService {
   }
 
   async getPostsByAuth(auth: AuthData, query: GetPostDto) {
-    const { page, limit, display } = query;
+    const { page, limit, display, q } = query;
     const skip = (page - 1) * limit;
     try {
-      const countPromise = this.PostModel.count({
-        author: auth._id,
-        display: display,
-      }).exec();
-      const postPromise = this.PostModel.find({
-        author: auth._id,
-        display: display,
-      })
+      let queryData;
+      if (q && q !== '') {
+        queryData = {
+          author: auth._id,
+          display: display,
+          $text: {
+            $search: q,
+          },
+        };
+      } else {
+        queryData = {
+          author: auth._id,
+          display: display,
+        };
+      }
+      const countPromise = this.PostModel.count(queryData).exec();
+      const postPromise = this.PostModel.find(query)
         .populate('hashtags', '_id name slug')
         .populate('author', '_id avatar_url name email')
         .skip(skip)
@@ -306,7 +314,9 @@ export class AuthService {
         user.googleOAuth = {
           googleId: userId,
         };
-        user.avatar_url = payload.picture;
+        if (user.avatar_url.includes('ui-avatars.com')) {
+          user.avatar_url = payload.picture;
+        }
       } else {
         user = new this.UserModel({
           email: payload.email,
