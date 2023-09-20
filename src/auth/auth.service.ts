@@ -285,8 +285,10 @@ export class AuthService {
           display: display,
         };
       }
-      const countPromise = this.PostModel.count(queryData).exec();
-      const postPromise = this.PostModel.find(query)
+      const countPromise = this.PostModel.count({ ...queryData }).exec();
+      const postPromise = this.PostModel.find({
+        ...queryData,
+      })
         .populate('hashtags', '_id name slug')
         .populate('author', '_id avatar_url name email')
         .skip(skip)

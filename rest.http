@@ -22,9 +22,9 @@ Content-Type: application/json
 }
 
 ###
-GET {{Base_url}}/auth/posts?display=draft
+GET {{Base_url}}/auth/posts?display=public
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiJkZGUxNTI2OS1hNDI0LTQ1YmYtOTBjYi0xY2FkZWViMWVlYmQiLCJyb2xlIjowLCJpYXQiOjE2OTUwOTU5MzEsImV4cCI6MTY5NTEwMzEzMX0.HmLGtPKwE5O8QPN9LdbgnLsUP4PQR82KsPKYfX2Hv9E
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIwNWQ5NTBlNy1hZjMxLTQzMDQtOTY2YS1lY2JjNGJmOWZiZDQiLCJyb2xlIjowLCJpYXQiOjE2OTUxNzE5NTMsImV4cCI6MTY5NTE3OTE1M30.GQEtV1QX3DJ5aCInP65Ky9CLeVnH-TSy4RdkcHvHYS0
 
 
 ###############################
