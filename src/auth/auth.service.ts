@@ -270,24 +270,17 @@ export class AuthService {
     const { page, limit, display, q } = query;
     const skip = (page - 1) * limit;
     try {
-      let queryData;
-      if (q && q !== '') {
-        queryData = {
-          author: auth._id,
-          display: display,
-          $text: {
-            $search: q,
-          },
-        };
-      } else {
-        queryData = {
-          author: auth._id,
-          display: display,
-        };
-      }
-      const countPromise = this.PostModel.count({ ...queryData }).exec();
+      const search = q && q !== '' ? { $text: { $search: q } } : {};
+
+      const countPromise = this.PostModel.count({
+        author: auth._id,
+        display: display,
+        ...search,
+      }).exec();
       const postPromise = this.PostModel.find({
-        ...queryData,
+        author: auth._id,
+        display: display,
+        ...search,
       })
         .populate('hashtags', '_id name slug')
         .populate('author', '_id avatar_url name email')
