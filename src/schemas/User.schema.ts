@@ -1,4 +1,4 @@
-import mongoose, { HydratedDocument, Model } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Post } from './Post.schema';
 import { GoogleOAuth, RememberToken, Role } from '../types/schema';

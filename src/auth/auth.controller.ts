@@ -108,14 +108,14 @@ export class AuthController {
     return this.authService.refreshToken(auth, dto);
   }
 
-  @UseGuards(RefreshAuthGuard)
+  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch('/change-password')
   changePassword(@User() user: AuthData, @Body() data: ChangePasswordDto) {
     return this.authService.ChangePassword(user, data);
   }
 
-  @UseGuards(RefreshAuthGuard)
+  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @Patch('/profile')
   updateProfile(@User() user: AuthData, @Body() data: UpdateProfileDto) {
