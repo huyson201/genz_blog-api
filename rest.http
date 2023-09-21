@@ -21,7 +21,28 @@ Content-Type: application/json
     "confirm_password": "asdasd"
 }
 
-###
+### @name updateProfile
+PATCH  {{Base_url}}/auth/profile  
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiI0MjdiYTgwMi1mYzAzLTRjYzctYTMzZC03ZDNiMWQwY2RmNWIiLCJyb2xlIjowLCJpYXQiOjE2OTUyNjkwMzYsImV4cCI6MTY5NTI3NjIzNn0.BiIZ6EhD1SU0B2iu-GtBhdK6ek7Xzkbqwb7kPGyutpw
+
+{
+    "name": "Son Nguyen"
+}
+
+
+### @name changPassword
+PATCH   https://shy-ruby-dove-tam.cyclic.cloud/api/auth/change-password  
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiI0MjdiYTgwMi1mYzAzLTRjYzctYTMzZC03ZDNiMWQwY2RmNWIiLCJyb2xlIjowLCJpYXQiOjE2OTUyNjkwMzYsImV4cCI6MTY5NTI3NjIzNn0.BiIZ6EhD1SU0B2iu-GtBhdK6ek7Xzkbqwb7kPGyutpw
+
+{
+    "current_password": "asdasd",
+    "new_password": "asdasd",
+    "confirm_new_password": "asdasd1"
+}
+
+### @name getPostsByAuth
 GET {{Base_url}}/auth/posts?display=public  
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIwNWQ5NTBlNy1hZjMxLTQzMDQtOTY2YS1lY2JjNGJmOWZiZDQiLCJyb2xlIjowLCJpYXQiOjE2OTUxNzE5NTMsImV4cCI6MTY5NTE3OTE1M30.GQEtV1QX3DJ5aCInP65Ky9CLeVnH-TSy4RdkcHvHYS0

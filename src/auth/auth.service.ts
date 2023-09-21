@@ -393,7 +393,7 @@ export class AuthService {
       const user = await this.UserModel.findById(auth._id);
       if (!user) throw new NotFoundException('User not found!');
       user.avatar_url = data.avatar_url || user.avatar_url;
-      user.name = data.avatar_url || user.name;
+      user.name = data.name || user.name;
       await user.save();
       return {
         ...user.toJSON(),
