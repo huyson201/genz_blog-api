@@ -1,3 +1,4 @@
+import { UpdateProfileDto } from './dto/UpdateProfileDto';
 import { AuthService } from './auth.service';
 import {
   Body,
@@ -10,6 +11,7 @@ import {
   HttpCode,
   HttpStatus,
   Query,
+  Patch,
 } from '@nestjs/common';
 import { RegisterDto } from './dto/registerDto';
 import { BadRequestExceptionFilter } from '../ExceptionFilter/BadRequestException.filter';
@@ -24,6 +26,7 @@ import { RoleGuard } from 'src/guards/role.guard';
 import { Role } from 'src/types/schema';
 import { GoogleLoginDto } from './dto/googleLoginDto';
 import { GetPostDto } from './dto/getPostsDto';
+import { ChangePasswordDto } from './dto/ChangePasswordDto';
 
 @Controller('auth')
 @UseFilters(BadRequestExceptionFilter)
@@ -103,5 +106,19 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   refreshToken(@Body() dto: RefreshTokenDto, @User() auth: AuthData) {
     return this.authService.refreshToken(auth, dto);
+  }
+
+  @UseGuards(RefreshAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Patch('/change-password')
+  changePassword(@User() user: AuthData, @Body() data: ChangePasswordDto) {
+    return this.authService.ChangePassword(user, data);
+  }
+
+  @UseGuards(RefreshAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @Patch('/profile')
+  updateProfile(@User() user: AuthData, @Body() data: UpdateProfileDto) {
+    return this.authService.updateProfile(user, data);
   }
 }

@@ -1,3 +1,4 @@
+import { UpdateProfileDto } from './dto/UpdateProfileDto';
 import { createVerifyMailStoreKey } from './../utils/createVerifyMailStoreKey';
 import {
   Injectable,
@@ -28,6 +29,7 @@ import { GoogleService } from 'src/google/google.service';
 import { GoogleLoginDto } from './dto/googleLoginDto';
 import { Image } from 'src/schemas/Image.schema';
 import { GetPostDto } from './dto/getPostsDto';
+import { ChangePasswordDto } from './dto/ChangePasswordDto';
 
 @Injectable()
 export class AuthService {
@@ -174,6 +176,7 @@ export class AuthService {
   async getProfile(authData: AuthData) {
     try {
       const user = await this.UserModel.findById(authData._id);
+      if (!user) throw new NotFoundException('User not found');
       return {
         ...user.toObject(),
         remember_tokens: undefined,
@@ -362,6 +365,46 @@ export class AuthService {
       throw error;
     }
   }
+
+  async ChangePassword(auth: AuthData, data: ChangePasswordDto) {
+    try {
+      const user = await this.UserModel.findById(auth._id);
+      if (!user) throw new NotFoundException('User not found!');
+      const checkPassword = bcrypt.compareSync(
+        data.current_password,
+        user.password,
+      );
+      if (!checkPassword) throw new BadRequestException('Invalid password!');
+      const hashPw = bcrypt.hashSync(data.new_password, 10);
+      user.password = hashPw;
+      await user.save();
+      return {
+        ...user.toJSON(),
+        password: undefined,
+        remember_tokens: undefined,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateProfile(auth: AuthData, data: UpdateProfileDto) {
+    try {
+      const user = await this.UserModel.findById(auth._id);
+      if (!user) throw new NotFoundException('User not found!');
+      user.avatar_url = data.avatar_url || user.avatar_url;
+      user.name = data.avatar_url || user.name;
+      await user.save();
+      return {
+        ...user.toJSON(),
+        password: undefined,
+        remember_tokens: undefined,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   private async generateToken(payload: {
     _id: string;
     email: string;
