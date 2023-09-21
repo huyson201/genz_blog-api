@@ -17,5 +17,7 @@ export class ChangePasswordDto {
   @Match('new_password')
   @IsNotEmpty()
   @IsString()
+  @MinLength(6)
+  @MaxLength(32)
   confirm_new_password: string;
 }
