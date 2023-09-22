@@ -6,7 +6,7 @@ Content-Type: application/json
 
 {
     "email": "admin@gmail.com",
-    "password": "asdasd"
+    "password": "asd123"
 }
 
 
@@ -131,13 +131,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQ
 ### @name createComment
 POST    {{Base_url}}/comments
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiIwZjcyYjAzNC0zMjdmLTRkMjktYjBkNy03MTBlMGIwNDUyNjciLCJpYXQiOjE2OTQwMDU1NjUsImV4cCI6MTY5NDE3ODM2NX0._QN9aRieLTUHVlrXM7otkRszcb2rcLmfprqkTWsxRH4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiJkMjBhMTYwNy03NzQwLTQ2OTItYTY0Ny00NmZiNjZiY2Q2ZGUiLCJyb2xlIjowLCJpYXQiOjE2OTUzNTEzMDEsImV4cCI6MTY5NTM1ODUwMX0.geZzqNkoIlQ89N13AdLgwZCa6jBeLRWD9RLejKWSya0
 
 {
-    "content": "hello 2",
+    "content": "hello 4",
     "post": "64f87d83375209a8f99b729b",
-    "parent": "64f94a7c94ab7196afa9e65b",
-    "rootId": "64f94a7c94ab7196afa9e65b"
+    "parent": "650d09cf650b10f88010263a"
 }
 
 ###############################

@@ -17,7 +17,7 @@ export class Comment {
     type: mongoose.Types.ObjectId,
     ref: 'Comment',
     require: false,
-    default: null,
+    default: '',
   })
   parent: string;
 

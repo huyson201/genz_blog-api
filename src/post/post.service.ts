@@ -9,12 +9,15 @@ import { slugify } from '../utils/slugify';
 import { PaginationQueryDto } from './dto/paginationQueryDto';
 import { PostDisplay } from 'src/types/schema';
 import { SearchQueryDto } from './dto/SearchQueryDto';
+import { Comment } from 'src/schemas/Comment.schema';
+import { GetCommentDto } from './dto/getCommentDto';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectModel(Post.name) private PostModel: Model<Post>,
     @InjectModel(Hashtag.name) private HashtagModel: Model<Hashtag>,
+    @InjectModel(Comment.name) private CommentModel: Model<Comment>,
   ) {}
   async getPosts(query: PaginationQueryDto) {
     const { page, limit } = query;
@@ -145,6 +148,42 @@ export class PostService {
       throw error;
     }
   }
+
+  async getComment(postId: string, query: GetCommentDto) {
+    const { page, limit, parent } = query;
+    const skip = (page - 1) * limit;
+    let queryData: Record<string, any> = {};
+    try {
+      if (parent && parent !== '') {
+        return await this.CommentModel.find({
+          post: postId,
+          slug: new RegExp(parent, 'i'),
+        })
+          .populate('author', '_id name avatar_url email')
+          .exec();
+      }
+      queryData = {
+        post: postId,
+        parent: '',
+      };
+
+      const countPromise = this.CommentModel.count(queryData).exec();
+
+      const commentsPromise = this.CommentModel.find(queryData)
+        .populate('author', '_id name avatar_url email')
+        .skip(skip)
+        .limit(limit)
+        .exec();
+      const [count, comments] = await Promise.all([
+        countPromise,
+        commentsPromise,
+      ]);
+      return this.createPaginationDoc(count, page, limit, comments);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   private async checkOrCreateHashtags(hashtags: string[]) {
     if (hashtags.length <= 0) return [];
 

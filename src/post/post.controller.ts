@@ -23,6 +23,7 @@ import { RoleGuard } from '../guards/role.guard';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../types/schema';
 import { SearchQueryDto } from './dto/SearchQueryDto';
+import { GetCommentDto } from './dto/getCommentDto';
 
 @Controller('posts')
 export class PostController {
@@ -47,7 +48,11 @@ export class PostController {
   getPostById(@Param('id') id: string) {
     return this.postService.getPostById(id);
   }
-
+  @Get(':id/comments')
+  @HttpCode(HttpStatus.OK)
+  getComments(@Param('id') id: string, @Query() query: GetCommentDto) {
+    return this.postService.getComment(id, query);
+  }
   @Post()
   @Roles(Role.Admin)
   @UseFilters(BadRequestExceptionFilter)

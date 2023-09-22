@@ -1,5 +1,5 @@
 import { CreateCommentDto } from './dto/CreateCommentDto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Param } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Comment } from '../schemas/Comment.schema';
@@ -16,42 +16,38 @@ export class CommentService {
 
   async createComment(auth: AuthData, commentData: CreateCommentDto) {
     try {
-      const { rootId, parent, ...data } = commentData;
-      const comment = new this.CommentModel({ ...data, author: auth._id });
+      const { parent, ...data } = commentData;
+      const comment = new this.CommentModel({
+        parent: parent,
+        content: data.content,
+        post: data.post,
+        author: auth._id,
+      });
 
-      if (!rootId && !parent) {
-        comment.slug = comment._id.toString();
-      } else if (rootId === parent) {
-        const rootComment = await this.CommentModel.findByIdAndUpdate(
-          rootId,
-          {
-            $inc: {
-              replyCount: 1,
+      if (parent !== '') {
+        const parentComment = await this.CommentModel.findOne({ _id: parent });
+        if (!parentComment) {
+          comment.slug = `${comment._id}`;
+        } else {
+          comment.parent = parent;
+          comment.slug = `${parentComment.slug}/${comment._id}`;
+
+          // update count reply
+          const parentComments = parentComment.slug.split('/');
+
+          await this.CommentModel.updateMany(
+            {
+              _id: { $in: parentComments },
             },
-          },
-          {
-            new: true,
-          },
-        );
-
-        comment.parent = parent;
-        comment.slug = `${rootComment.slug}/${comment._id}`;
+            {
+              $inc: { replyCount: 1 },
+            },
+          );
+        }
       } else {
-        const rootCommentAsync = this.CommentModel.findByIdAndUpdate(rootId, {
-          $inc: {
-            replyCount: 1,
-          },
-        });
-
-        const parentCommentAsync = this.CommentModel.findById(parent);
-        const [rootCmt, parentCmt] = await Promise.all([
-          rootCommentAsync,
-          parentCommentAsync,
-        ]);
-
-        comment.slug = `${parentCmt.slug}/${comment._id}`;
+        console.log(comment._id);
+        comment.slug = `${comment._id}`;
       }
-
       await comment.save();
       await comment.populate('author', '_id email avatar_url name');
       return comment;
