@@ -1,5 +1,10 @@
 import { CreateCommentDto } from './dto/CreateCommentDto';
-import { Injectable, Param } from '@nestjs/common';
+import {
+  Injectable,
+  Param,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Comment } from '../schemas/Comment.schema';
@@ -53,6 +58,43 @@ export class CommentService {
       return comment;
     } catch (error) {
       console.log(error);
+      throw error;
+    }
+  }
+
+  async getLastComments() {
+    try {
+      return this.CommentModel.find()
+        .populate('author', '_id name avatar_url email')
+        .limit(10)
+        .sort({ createdAt: -1 })
+        .exec();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteComment(auth: AuthData, id: string) {
+    try {
+      const comment = await this.CommentModel.findById(id);
+      if (!comment) throw new NotFoundException();
+
+      if (String(comment.author) !== auth._id) throw new ForbiddenException();
+
+      return await comment.deleteOne();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateComment(auth: AuthData, id: string, content: string) {
+    try {
+      const comment = await this.CommentModel.findById(id);
+      if (!comment) throw new NotFoundException('Comment not found!');
+      if (String(comment.author) !== auth._id) throw new ForbiddenException();
+      comment.content = content;
+      return await comment.save();
+    } catch (error) {
       throw error;
     }
   }

@@ -1,7 +1,10 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
+  Patch,
   Post,
   UseFilters,
   UseGuards,
@@ -19,6 +22,29 @@ export class CommentController {
   @Get()
   getComments() {
     return this.commentService.getComments();
+  }
+
+  @Get('/last')
+  getLastComments() {
+    return this.commentService.getLastComments();
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard)
+  @UseFilters(BadRequestExceptionFilter)
+  deleteComment(@User() auth: AuthData, @Param('id') id: string) {
+    return this.commentService.deleteComment(auth, id);
+  }
+
+  @Patch(':id')
+  @UseGuards(AuthGuard)
+  @UseFilters(BadRequestExceptionFilter)
+  updateComment(
+    @User() auth: AuthData,
+    @Param('id') id: string,
+    @Body('content') content: string,
+  ) {
+    return this.commentService.updateComment(auth, id, content);
   }
 
   @Post()

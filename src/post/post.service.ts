@@ -160,6 +160,7 @@ export class PostService {
           slug: new RegExp(parent, 'i'),
         })
           .populate('author', '_id name avatar_url email')
+          .sort({ createdAt: -1 })
           .exec();
       }
       queryData = {
@@ -173,6 +174,7 @@ export class PostService {
         .populate('author', '_id name avatar_url email')
         .skip(skip)
         .limit(limit)
+        .sort({ createdAt: -1 })
         .exec();
       const [count, comments] = await Promise.all([
         countPromise,

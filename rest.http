@@ -139,6 +139,10 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQ
     "parent": "650d09cf650b10f88010263a"
 }
 
+### @name getCommentsByPost
+Get {{Base_url}}/posts/64f87d83375209a8f99b729b/comments
+
+
 ###############################
 #                             #
 #          Hashtags           #
