@@ -30,7 +30,7 @@ export class CommentService {
       });
 
       if (parent !== '') {
-        const parentComment = await this.CommentModel.findOne({ _id: parent });
+        const parentComment = await this.CommentModel.findById(parent);
         if (!parentComment) {
           comment.slug = `${comment._id}`;
         } else {
@@ -64,7 +64,7 @@ export class CommentService {
 
   async getLastComments() {
     try {
-      return this.CommentModel.find()
+      return this.CommentModel.find({ parent: '' })
         .populate('author', '_id name avatar_url email')
         .limit(10)
         .sort({ createdAt: -1 })
@@ -81,6 +81,24 @@ export class CommentService {
 
       if (String(comment.author) !== auth._id) throw new ForbiddenException();
 
+      if (comment.parent === '') {
+        return await comment.deleteOne();
+      }
+
+      const parents = comment.slug
+        .split('/')
+        .filter((value) => value !== comment._id.toString());
+
+      if (parents.length === 0) return await comment.deleteOne();
+
+      await this.CommentModel.updateMany(
+        {
+          _id: { $in: parents },
+        },
+        {
+          $inc: { replyCount: -1 },
+        },
+      );
       return await comment.deleteOne();
     } catch (error) {
       throw error;

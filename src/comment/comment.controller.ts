@@ -24,6 +24,13 @@ export class CommentController {
     return this.commentService.getComments();
   }
 
+  @Post()
+  @UseGuards(AuthGuard)
+  @UseFilters(BadRequestExceptionFilter)
+  createComment(@User() auth: AuthData, @Body() data: CreateCommentDto) {
+    return this.commentService.createComment(auth, data);
+  }
+
   @Get('/last')
   getLastComments() {
     return this.commentService.getLastComments();
@@ -45,12 +52,5 @@ export class CommentController {
     @Body('content') content: string,
   ) {
     return this.commentService.updateComment(auth, id, content);
-  }
-
-  @Post()
-  @UseGuards(AuthGuard)
-  @UseFilters(BadRequestExceptionFilter)
-  createComment(@User() auth: AuthData, @Body() data: CreateCommentDto) {
-    return this.commentService.createComment(auth, data);
   }
 }
