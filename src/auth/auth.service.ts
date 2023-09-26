@@ -189,9 +189,16 @@ export class AuthService {
 
   async sendVerifyEmail(data: AuthData) {
     try {
-      const user = await this.UserModel.findById(data._id).select(
-        '_id email name',
-      );
+      const user = await this.UserModel.findById(data._id);
+      if (!user) throw new NotFoundException();
+      if (user.verified)
+        return {
+          message: 'user was verified',
+        };
+
+      // * remove old token
+      this.cache.del(createVerifyMailStoreKey(user._id.toString()));
+
       const verifyToken = await this.generateVerifyEmailToken({
         _id: data._id,
         email: data.email,
@@ -207,7 +214,7 @@ export class AuthService {
         },
       );
 
-      return this.sendMail.add(
+      await this.sendMail.add(
         'verify-mail',
         {
           to: [{ email: data.email }],
@@ -216,6 +223,9 @@ export class AuthService {
         },
         { removeOnComplete: true, removeOnFail: true },
       );
+      return {
+        message: 'verify mail was sent',
+      };
     } catch (error) {
       throw error;
     }
