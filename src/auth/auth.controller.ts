@@ -92,13 +92,13 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   sendVerifyEmail(@User() auth: AuthData) {
-    this.authService.sendVerifyEmail(auth);
+    return this.authService.sendVerifyEmail(auth);
   }
 
   @Post('/verify-email')
   @HttpCode(HttpStatus.OK)
   verifyEmail(@Body() dto: VerifyEmailDto) {
-    this.authService.verifyEmail(dto.verifyToken);
+    return this.authService.verifyEmail(dto.verifyToken);
   }
 
   @Post('/refresh-token')

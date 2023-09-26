@@ -221,10 +221,11 @@ export class AuthService {
           name: user.name,
           verify_url: verifyUrl,
         },
-        { removeOnComplete: true, removeOnFail: true },
+        { removeOnComplete: true },
       );
       return {
         message: 'verify mail was sent',
+        success: true,
       };
     } catch (error) {
       throw error;
