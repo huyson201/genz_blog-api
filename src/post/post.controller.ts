@@ -14,6 +14,8 @@ import {
   HttpCode,
   HttpStatus,
   Patch,
+  Ip,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { BadRequestExceptionFilter } from '../ExceptionFilter/BadRequestException.filter';
@@ -48,11 +50,13 @@ export class PostController {
   getPostById(@Param('id') id: string) {
     return this.postService.getPostById(id);
   }
+
   @Get(':id/comments')
   @HttpCode(HttpStatus.OK)
   getComments(@Param('id') id: string, @Query() query: GetCommentDto) {
     return this.postService.getComment(id, query);
   }
+
   @Post()
   @Roles(Role.Admin)
   @UseFilters(BadRequestExceptionFilter)
@@ -76,11 +80,9 @@ export class PostController {
   }
 
   @Patch(':id/view/increase')
-  @Roles(Role.Admin)
-  @UseGuards(AuthGuard, RoleGuard)
   @HttpCode(HttpStatus.OK)
-  increasePostView(@Param('id') id: string) {
-    return this.postService.increaseView(id);
+  increasePostView(@Param('id') id: string, @Ip() ip: string) {
+    return this.postService.increaseView(id, ip);
   }
 
   @Delete(':id')

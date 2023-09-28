@@ -13,6 +13,7 @@ export class MailConsumer {
       verify_url,
       name,
     });
+    console.log(res);
     return res;
   }
 }

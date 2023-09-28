@@ -1,6 +1,6 @@
 import { UpdatePostDto } from './dto/UpdatePostDto';
 import { CreatePostDto } from './dto/CreatePostDto';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Hashtag } from '../schemas/tag.schema';
@@ -11,6 +11,8 @@ import { PostDisplay } from 'src/types/schema';
 import { SearchQueryDto } from './dto/SearchQueryDto';
 import { Comment } from 'src/schemas/Comment.schema';
 import { GetCommentDto } from './dto/getCommentDto';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class PostService {
@@ -18,6 +20,7 @@ export class PostService {
     @InjectModel(Post.name) private PostModel: Model<Post>,
     @InjectModel(Hashtag.name) private HashtagModel: Model<Hashtag>,
     @InjectModel(Comment.name) private CommentModel: Model<Comment>,
+    @Inject(CACHE_MANAGER) private cache: Cache,
   ) {}
   async getPosts(query: PaginationQueryDto) {
     const { page, limit } = query;
@@ -111,8 +114,15 @@ export class PostService {
     }
   }
 
-  async increaseView(postId: string) {
+  async increaseView(postId: string, ip: string) {
     try {
+      const check = await this.cache.get(`${ip}-${postId}-increaseView`);
+      if (check) {
+        return {
+          message: 'success',
+          success: true,
+        };
+      }
       const post = await this.PostModel.findByIdAndUpdate(
         postId,
         {
@@ -120,6 +130,9 @@ export class PostService {
         },
         { new: true },
       );
+      await this.cache.set(`${ip}-${postId}-increaseView`, true, {
+        ttl: 3600,
+      });
       return post;
     } catch (error) {
       throw error;

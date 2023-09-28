@@ -196,8 +196,17 @@ export class AuthService {
           message: 'user was verified',
         };
 
-      // * remove old token
-      this.cache.del(createVerifyMailStoreKey(user._id.toString()));
+      // check old email, if exist return true
+      const cacheData = await this.cache.get(
+        createVerifyMailStoreKey(user._id.toString()),
+      );
+
+      if (cacheData) {
+        return {
+          message: 'verify mail was sent',
+          success: true,
+        };
+      }
 
       const verifyToken = await this.generateVerifyEmailToken({
         _id: data._id,
@@ -210,7 +219,7 @@ export class AuthService {
         createVerifyMailStoreKey(data._id.toString()),
         verifyToken,
         {
-          ttl: 3600 * 24,
+          ttl: 60,
         },
       );
 

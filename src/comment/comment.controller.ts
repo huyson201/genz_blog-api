@@ -8,6 +8,8 @@ import {
   Post,
   UseFilters,
   UseGuards,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { AuthGuard } from '../guards/Auth.guard';
@@ -20,6 +22,7 @@ export class CommentController {
   constructor(private commentService: CommentService) {}
 
   @Get()
+  @HttpCode(HttpStatus.OK)
   getComments() {
     return this.commentService.getComments();
   }
@@ -27,11 +30,13 @@ export class CommentController {
   @Post()
   @UseGuards(AuthGuard)
   @UseFilters(BadRequestExceptionFilter)
+  @HttpCode(HttpStatus.OK)
   createComment(@User() auth: AuthData, @Body() data: CreateCommentDto) {
     return this.commentService.createComment(auth, data);
   }
 
   @Get('/last')
+  @HttpCode(HttpStatus.OK)
   getLastComments() {
     return this.commentService.getLastComments();
   }
@@ -39,6 +44,7 @@ export class CommentController {
   @Delete(':id')
   @UseGuards(AuthGuard)
   @UseFilters(BadRequestExceptionFilter)
+  @HttpCode(HttpStatus.OK)
   deleteComment(@User() auth: AuthData, @Param('id') id: string) {
     return this.commentService.deleteComment(auth, id);
   }
@@ -46,6 +52,7 @@ export class CommentController {
   @Patch(':id')
   @UseGuards(AuthGuard)
   @UseFilters(BadRequestExceptionFilter)
+  @HttpCode(HttpStatus.OK)
   updateComment(
     @User() auth: AuthData,
     @Param('id') id: string,

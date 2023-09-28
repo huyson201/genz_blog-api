@@ -10,7 +10,6 @@ import { FileModule } from './file/file.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { PostModule } from './post/post.module';
 import * as redisStore from 'cache-manager-redis-store';
-import { JwtModule } from '@nestjs/jwt';
 import { CommentModule } from './comment/comment.module';
 import { TagModule } from './tag/tag.module';
 

@@ -5,8 +5,8 @@ POST {{Base_url}}/auth/login
 Content-Type: application/json
 
 {
-    "email": "admin@gmail.com",
-    "password": "asd123"
+    "email": "lop9.2thanhson@gmail.com",
+    "password": "asdasd"
 }
 
 
@@ -20,6 +20,12 @@ Content-Type: application/json
     "password": "asdasd",
     "confirm_password": "asdasd"
 }
+
+### @name sendRequest
+POST  {{Base_url}}/auth/send-verify  
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvcDkuMnRoYW5oc29uQGdtYWlsLmNvbSIsIl9pZCI6IjY1MTJkOWQwMzMyOWRkMmI4NmY0MWUwYiIsInRva2VuSWQiOiJhNjI5ODljYS02Mzg4LTQ2YmQtOTlkOS03ZjJkYjg5MWJmNTciLCJyb2xlIjoxLCJpYXQiOjE2OTU3Mzc5NjAsImV4cCI6MTY5NTc0NTE2MH0.6gko9Qh-tNKHlEWuqiG4JFbF9xdNhmBtfs-Xp7cQvEk
+
 
 ### @name updateProfile
 PATCH  {{Base_url}}/auth/profile  
@@ -83,6 +89,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQ
     "display": "public",
     "hashtags": ["asp.net", "TypeScript", "Wordpress", "Windows", "PostgreSQL"]
 }
+
+
+### @name IncreaseView
+PATCH  {{Base_url}}/posts/65110bc3d20dd3f97ee2970a/view/increase
+Content-Type: application/json
+
 
 
 ### @name GetPosts
