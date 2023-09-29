@@ -15,7 +15,6 @@ import {
   HttpStatus,
   Patch,
   Ip,
-  UseInterceptors,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { BadRequestExceptionFilter } from '../ExceptionFilter/BadRequestException.filter';
@@ -26,6 +25,7 @@ import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../types/schema';
 import { SearchQueryDto } from './dto/SearchQueryDto';
 import { GetCommentDto } from './dto/getCommentDto';
+import { ParseMongoIdPipe } from 'src/ParsePipe/ParseMongoIdPipe';
 
 @Controller('posts')
 export class PostController {
@@ -47,13 +47,16 @@ export class PostController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  getPostById(@Param('id') id: string) {
+  getPostById(@Param('id', ParseMongoIdPipe) id: string) {
     return this.postService.getPostById(id);
   }
 
   @Get(':id/comments')
   @HttpCode(HttpStatus.OK)
-  getComments(@Param('id') id: string, @Query() query: GetCommentDto) {
+  getComments(
+    @Param('id', ParseMongoIdPipe) id: string,
+    @Query() query: GetCommentDto,
+  ) {
     return this.postService.getComment(id, query);
   }
 
@@ -72,7 +75,7 @@ export class PostController {
   @UseFilters(BadRequestExceptionFilter)
   @HttpCode(HttpStatus.OK)
   updatePost(
-    @Param('id') id: string,
+    @Param('id', ParseMongoIdPipe) id: string,
     @User() auth: AuthData,
     @Body() data: UpdatePostDto,
   ) {
@@ -81,7 +84,10 @@ export class PostController {
 
   @Patch(':id/view/increase')
   @HttpCode(HttpStatus.OK)
-  increasePostView(@Param('id') id: string, @Ip() ip: string) {
+  increasePostView(
+    @Param('id', ParseMongoIdPipe) id: string,
+    @Ip() ip: string,
+  ) {
     return this.postService.increaseView(id, ip);
   }
 
@@ -89,7 +95,10 @@ export class PostController {
   @Roles(Role.Admin)
   @UseGuards(AuthGuard, RoleGuard)
   @HttpCode(HttpStatus.OK)
-  deletePost(@Param('id') id: string, @User() auth: AuthData) {
+  deletePost(
+    @Param('id', ParseMongoIdPipe) id: string,
+    @User() auth: AuthData,
+  ) {
     return this.postService.deletePost(auth, id);
   }
 }

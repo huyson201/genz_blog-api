@@ -16,6 +16,7 @@ import { AuthGuard } from '../guards/Auth.guard';
 import { BadRequestExceptionFilter } from '../ExceptionFilter/BadRequestException.filter';
 import { User } from '../decorators/user.decorator';
 import { CreateCommentDto } from './dto/CreateCommentDto';
+import { ParseMongoIdPipe } from 'src/ParsePipe/ParseMongoIdPipe';
 
 @Controller('comments')
 export class CommentController {
@@ -45,7 +46,10 @@ export class CommentController {
   @UseGuards(AuthGuard)
   @UseFilters(BadRequestExceptionFilter)
   @HttpCode(HttpStatus.OK)
-  deleteComment(@User() auth: AuthData, @Param('id') id: string) {
+  deleteComment(
+    @User() auth: AuthData,
+    @Param('id', ParseMongoIdPipe) id: string,
+  ) {
     return this.commentService.deleteComment(auth, id);
   }
 
@@ -55,7 +59,7 @@ export class CommentController {
   @HttpCode(HttpStatus.OK)
   updateComment(
     @User() auth: AuthData,
-    @Param('id') id: string,
+    @Param('id', ParseMongoIdPipe) id: string,
     @Body('content') content: string,
   ) {
     return this.commentService.updateComment(auth, id, content);

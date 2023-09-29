@@ -102,7 +102,7 @@ GET {{Base_url}}/posts?page=1&limit=10
 Content-Type: application/json
 
 ### @name getPostById
-GET {{Base_url}}/posts/6501a844ec9b92f4d2bcf88c
+GET {{Base_url}}/posts/1
 Content-Type: application/json
 
 
