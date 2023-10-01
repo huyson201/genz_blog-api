@@ -15,6 +15,7 @@ import {
   HttpStatus,
   Patch,
   Ip,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { BadRequestExceptionFilter } from '../ExceptionFilter/BadRequestException.filter';
@@ -26,6 +27,9 @@ import { Role } from '../types/schema';
 import { SearchQueryDto } from './dto/SearchQueryDto';
 import { GetCommentDto } from './dto/getCommentDto';
 import { ParseMongoIdPipe } from 'src/ParsePipe/ParseMongoIdPipe';
+import { CustomCacheKey } from 'src/decorators/custom-cacheKey.decorator';
+import { CustomCacheInterceptor } from 'src/interceptors/custom-cache-interceptor/custom-cache.interceptor';
+import { POST_KEY_PREFIX } from 'src/libs/CacheKey.constant';
 
 @Controller('posts')
 export class PostController {
@@ -46,6 +50,10 @@ export class PostController {
   }
 
   @Get(':id')
+  @CustomCacheKey((request) =>
+    request.params.id ? `${POST_KEY_PREFIX}::${request.params.id}` : '',
+  )
+  @UseInterceptors(CustomCacheInterceptor)
   @HttpCode(HttpStatus.OK)
   getPostById(@Param('id', ParseMongoIdPipe) id: string) {
     return this.postService.getPostById(id);

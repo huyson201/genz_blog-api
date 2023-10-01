@@ -27,10 +27,18 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvcDkuMnRoYW5oc29uQGdtYWlsLmNvbSIsIl9pZCI6IjY1MTJkOWQwMzMyOWRkMmI4NmY0MWUwYiIsInRva2VuSWQiOiJhNjI5ODljYS02Mzg4LTQ2YmQtOTlkOS03ZjJkYjg5MWJmNTciLCJyb2xlIjoxLCJpYXQiOjE2OTU3Mzc5NjAsImV4cCI6MTY5NTc0NTE2MH0.6gko9Qh-tNKHlEWuqiG4JFbF9xdNhmBtfs-Xp7cQvEk
 
 
+### @name getProfile
+GET  {{Base_url}}/auth/profile  
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvcDkuMnRoYW5oc29uQGdtYWlsLmNvbSIsIl9pZCI6IjY1MTJkOWQwMzMyOWRkMmI4NmY0MWUwYiIsInRva2VuSWQiOiI1ZjkzMjk5ZS04YjcxLTQ4MTItYjBhNC01MTNjYjYyNDNhMjUiLCJyb2xlIjoxLCJpYXQiOjE2OTYwODAyMTMsImV4cCI6MTY5NjA4NzQxM30._JtKA1hziHBaD8nfZw1TMN-f2QU_NGuoGty9sR2IPoM
+
+
+
 ### @name updateProfile
 PATCH  {{Base_url}}/auth/profile  
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsIl9pZCI6IjY0ZjcwOWYyNTdiZTA5N2ZkZmY1ZGYwOSIsInRva2VuSWQiOiI0MjdiYTgwMi1mYzAzLTRjYzctYTMzZC03ZDNiMWQwY2RmNWIiLCJyb2xlIjowLCJpYXQiOjE2OTUyNjkwMzYsImV4cCI6MTY5NTI3NjIzNn0.BiIZ6EhD1SU0B2iu-GtBhdK6ek7Xzkbqwb7kPGyutpw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxvcDkuMnRoYW5oc29uQGdtYWlsLmNvbSIsIl9pZCI6IjY1MTJkOWQwMzMyOWRkMmI4NmY0MWUwYiIsInRva2VuSWQiOiI1ZjkzMjk5ZS04YjcxLTQ4MTItYjBhNC01MTNjYjYyNDNhMjUiLCJyb2xlIjoxLCJpYXQiOjE2OTYwODAyMTMsImV4cCI6MTY5NjA4NzQxM30._JtKA1hziHBaD8nfZw1TMN-f2QU_NGuoGty9sR2IPoM
+
 
 {
     "name": "Son Nguyen"
@@ -102,7 +110,7 @@ GET {{Base_url}}/posts?page=1&limit=10
 Content-Type: application/json
 
 ### @name getPostById
-GET {{Base_url}}/posts/1
+GET {{Base_url}}/posts/65110bc3d20dd3f97ee2970a
 Content-Type: application/json
 
 

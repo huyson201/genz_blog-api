@@ -13,6 +13,7 @@ import { Comment } from 'src/schemas/Comment.schema';
 import { GetCommentDto } from './dto/getCommentDto';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
+import { POST_KEY_PREFIX } from 'src/libs/CacheKey.constant';
 
 @Injectable()
 export class PostService {
@@ -47,6 +48,7 @@ export class PostService {
   }
 
   async getPostById(id: string) {
+    console.log('get post by id');
     try {
       const post = await this.PostModel.findById(id)
         .where('display')
@@ -95,6 +97,7 @@ export class PostService {
       post.display = dataUpdate.display || post.display;
       post.updatedAt = new Date();
       await post.save();
+      await this.cache.set(`${POST_KEY_PREFIX}::${postId}`, post);
       return await post.populate('hashtags', '_id name slug');
     } catch (error) {
       throw error;
@@ -106,6 +109,7 @@ export class PostService {
         _id: postId,
         author: auth._id,
       });
+      await this.cache.del(`${POST_KEY_PREFIX}::${postId}`);
       return {
         message: 'delete success!',
       };
@@ -116,8 +120,10 @@ export class PostService {
 
   async increaseView(postId: string, ip: string) {
     try {
-      const check = await this.cache.get(`${ip}-${postId}-increaseView`);
-      if (check) {
+      const checkViewHasIncrease = await this.cache.get(
+        `${ip}-${postId}-increaseView`,
+      );
+      if (checkViewHasIncrease) {
         return {
           message: 'success',
           success: true,
@@ -130,6 +136,7 @@ export class PostService {
         },
         { new: true },
       );
+      await this.cache.set(`${POST_KEY_PREFIX}::${postId}`, post);
       await this.cache.set(`${ip}-${postId}-increaseView`, true, {
         ttl: 3600,
       });
@@ -166,6 +173,7 @@ export class PostService {
     const { page, limit, parent } = query;
     const skip = (page - 1) * limit;
     let queryData: Record<string, any> = {};
+
     try {
       if (parent && parent !== '') {
         return await this.CommentModel.find({
@@ -202,38 +210,20 @@ export class PostService {
   private async checkOrCreateHashtags(hashtags: string[]) {
     if (hashtags.length <= 0) return [];
 
-    const regexHashtags = hashtags.map(
-      (hashtag) => new RegExp(`^${hashtag}$`, 'i'),
-    );
-    const existHashtags = await this.HashtagModel.find({
-      name: { $in: regexHashtags },
+    const createdTags = hashtags.map(async (tag) => {
+      const existingTag = await this.HashtagModel.findOne({
+        name: new RegExp(`^${tag}$`, 'i'),
+      });
+      if (existingTag) return existingTag;
+
+      const newTags = await this.HashtagModel.create({
+        name: tag,
+        slug: slugify(tag),
+      });
+      return newTags;
     });
 
-    if (existHashtags.length === hashtags.length) return existHashtags;
-
-    const unsavedHashtag = hashtags.filter(
-      (item) =>
-        !existHashtags.some(
-          (existHashtag) =>
-            existHashtag.name.toLowerCase() === item.toLowerCase(),
-        ),
-    );
-
-    const insertData = await this.HashtagModel.insertMany(
-      unsavedHashtag.map((item) => {
-        return {
-          name: item,
-          slug: slugify(item),
-        };
-      }),
-    );
-
-    const concatExistHashtags = [...existHashtags, ...insertData];
-    return hashtags.map((item) =>
-      concatExistHashtags.find(
-        (hashtag) => hashtag.name.toLowerCase() === item.toLowerCase(),
-      ),
-    );
+    return await Promise.all(createdTags);
   }
 
   private createPaginationDoc(

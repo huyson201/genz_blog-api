@@ -12,6 +12,7 @@ import {
   HttpStatus,
   Query,
   Patch,
+  UseInterceptors,
 } from '@nestjs/common';
 import { RegisterDto } from './dto/registerDto';
 import { BadRequestExceptionFilter } from '../ExceptionFilter/BadRequestException.filter';
@@ -27,6 +28,9 @@ import { Role } from 'src/types/schema';
 import { GoogleLoginDto } from './dto/googleLoginDto';
 import { GetPostDto } from './dto/getPostsDto';
 import { ChangePasswordDto } from './dto/ChangePasswordDto';
+import { CustomCacheKey } from 'src/decorators/custom-cacheKey.decorator';
+import { PROFILE_KEY_PREFIX } from 'src/libs/CacheKey.constant';
+import { CustomCacheInterceptor } from 'src/interceptors/custom-cache-interceptor/custom-cache.interceptor';
 
 @Controller('auth')
 @UseFilters(BadRequestExceptionFilter)
@@ -35,6 +39,8 @@ export class AuthController {
 
   @Get('/profile')
   @UseGuards(AuthGuard)
+  @CustomCacheKey((request) => `${PROFILE_KEY_PREFIX}::${request.user._id}`)
+  @UseInterceptors(CustomCacheInterceptor)
   @HttpCode(HttpStatus.OK)
   getProfile(@User() auth: AuthData) {
     return this.authService.getProfile(auth);

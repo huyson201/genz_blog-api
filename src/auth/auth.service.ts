@@ -30,6 +30,7 @@ import { GoogleLoginDto } from './dto/googleLoginDto';
 import { Image } from 'src/schemas/Image.schema';
 import { GetPostDto } from './dto/getPostsDto';
 import { ChangePasswordDto } from './dto/ChangePasswordDto';
+import { PROFILE_KEY_PREFIX } from 'src/libs/CacheKey.constant';
 
 @Injectable()
 export class AuthService {
@@ -48,12 +49,7 @@ export class AuthService {
     const { name, email, password } = data;
 
     try {
-      const existUser = await this.UserModel.findOne({
-        email: new RegExp(`^${email}$`, 'i'),
-      });
-      if (existUser) {
-        throw new ConflictException('email exist!');
-      }
+      await this.isExistUserByEmailAndThrowError(email);
 
       const hashPassword = bcrypt.hashSync(password, 10);
       const newUser = new this.UserModel({
@@ -415,11 +411,13 @@ export class AuthService {
       user.avatar_url = data.avatar_url || user.avatar_url;
       user.name = data.name || user.name;
       await user.save();
-      return {
+      const responseProfileData = {
         ...user.toJSON(),
         password: undefined,
         remember_tokens: undefined,
       };
+      this.cache.set(`${PROFILE_KEY_PREFIX}::${auth._id}`, responseProfileData);
+      return responseProfileData;
     } catch (error) {
       throw error;
     }
@@ -488,5 +486,15 @@ export class AuthService {
       nextPage,
       docs,
     };
+  }
+  private async isExistUserByEmailAndThrowError(email: string) {
+    const existUser = await this.UserModel.findOne({
+      email: new RegExp(`^${email}$`, 'i'),
+    });
+    if (existUser) {
+      throw new ConflictException('email exist!');
+    }
+
+    return existUser;
   }
 }
